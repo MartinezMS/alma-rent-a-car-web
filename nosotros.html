@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conocé la historia de Alma Rent a Car, expertos locales en alquiler de vehículos en Salta y Jujuy. Más de 10 años brindando soluciones de movilidad.">
+    <title>Sobre Nosotros | Alma Rent a Car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container-wide nav-container">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="Alma Rent a Car" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; color:var(--color-primary);">ALMA</span>
+            </a>
+            <div class="hamburger"><i class="fas fa-bars"></i></div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="flota.html" class="nav-link">Flota</a>
+                <a href="nosotros.html" class="nav-link active">Nosotros</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+                <a href="index.html#reservas" class="btn btn-primary nav-cta">Reservar</a>
+            </nav>
+        </div>
+        <div class="nav-overlay"></div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a> / <span>Sobre Nosotros</span>
+            </div>
+            <h1 class="reveal">Nuestra Historia</h1>
+            <p class="reveal reveal-delay-1">Conocé quiénes están detrás de tu viaje.</p>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="about-grid" style="grid-template-columns: 1fr;">
+                <div class="about-content reveal" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2>Nacidos y criados en el Norte</h2>
+                    <p style="font-size: 1.1rem;"><strong>Alma Rent a Car</strong> nació de la pasión por nuestra tierra. Somos una empresa 100% local, fundada por norteños que conocen cada curva, cada quebrada y cada paisaje de Salta y Jujuy.</p>
+                    <p style="font-size: 1.1rem;">Nuestra misión es simple: queremos que experimentes el norte argentino con la misma libertad y seguridad con la que lo hacemos nosotros. No somos una franquicia internacional fría; somos anfitriones dedicados a que tu viaje sea perfecto.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 4rem;" class="reveal">
+                <img src="img/nosotros-bg.png" alt="Paisaje de Jujuy" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: var(--color-gray-50);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Nuestros Valores</h2>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card reveal reveal-delay-1">
+                    <div class="benefit-icon"><i class="fas fa-handshake"></i></div>
+                    <h3>Transparencia</h3>
+                    <p>Creemos en relaciones a largo plazo basadas en la honestidad. Nuestros precios son los que ves, sin sorpresas ni letra chica.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-2">
+                    <div class="benefit-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Cercanía</h3>
+                    <p>Estamos a un mensaje de WhatsApp de distancia. Si nos necesitás, respondemos rápidamente para asistirte en tu viaje.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-3">
+                    <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Seguridad</h3>
+                    <p>Invertimos fuertemente en el mantenimiento preventivo de nuestra flota. Tu tranquilidad y la de tu familia es nuestra prioridad.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-4">
+                    <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Sustentabilidad</h3>
+                    <p>Promovemos el turismo responsable y el cuidado de los frágiles ecosistemas de nuestra Puna y Quebrada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div>&copy; <span id="current-year"></span> Alma Rent a Car. Todos los derechos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alma Rent a Car. Alquiler de autos en el Norte Argentino. Flota moderna, tarifas claras y atención personalizada en Salta y Jujuy. Reservá hoy mismo.">
+    <meta name="keywords" content="alquiler de autos, rent a car, salta, jujuy, norte argentino, autos, alquiler, turismo">
+    <title>Alma Rent a Car | Alquiler de autos en el Norte Argentino</title>
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Alma Rent a Car | Alquiler de autos">
+    <meta property="og:description" content="Movete libremente por Jujuy, Salta y la región con nuestra flota moderna y segura.">
+    <meta property="og:image" content="https://almarentacar.com.ar/img/hero-bg.png">
+    <meta property="og:url" content="https://almarentacar.com.ar">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Schema.org for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoRental",
+      "name": "Alma Rent a Car",
+      "image": "https://almarentacar.com.ar/img/logo.png",
+      "@id": "",
+      "url": "https://almarentacar.com.ar",
+      "telephone": "+5493871234567",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Gral. Güemes 500",
+        "addressLocality": "Salta Capital",
+        "addressRegion": "Salta",
+        "postalCode": "4400",
+        "addressCountry": "AR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -24.7821,
+        "longitude": -65.4125
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "08:00",
+        "closes": "20:00"
+      }
+    }
+    </script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header header--transparent" data-transparent="true">
+        <div class="container-wide nav-container">
+            <a href="index.html" class="logo">
+                <!-- Fallback to text if logo.png is missing -->
+                <img src="img/logo.png" alt="Alma Rent a Car" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; color:var(--color-primary);">ALMA</span>
+            </a>
+            
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="flota.html" class="nav-link">Flota</a>
+                <a href="nosotros.html" class="nav-link">Nosotros</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+                <a href="#reservas" class="btn btn-primary nav-cta">Reservar</a>
+            </nav>
+        </div>
+        <div class="nav-overlay"></div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="img/hero-bg.png" alt="Paisaje Norte Argentino con ruta">
+        </div>
+        <div class="container hero-content">
+            <span class="hero-badge"><i class="fas fa-star"></i> La mejor forma de recorrer el norte</span>
+            <h1>Libertad para descubrir el Norte Argentino</h1>
+            <p>Alquilá tu auto en Salta y Jujuy con la seguridad, transparencia y el respaldo de expertos locales.</p>
+            
+            <div class="hero-buttons">
+                <a href="#reservas" class="btn btn-primary btn-lg">Empezar Reserva</a>
+                <a href="flota.html" class="btn btn-secondary btn-lg">Ver Vehículos</a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">+500</div>
+                    <div class="hero-stat-label">Clientes Felices</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">100%</div>
+                    <div class="hero-stat-label">Flota Moderna</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">24/7</div>
+                    <div class="hero-stat-label">Asistencia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Widget (Hertz Style) -->
+    <section id="reservas" class="booking-section">
+        <div class="booking-widget reveal">
+            <div class="booking-widget-header">
+                <h3><i class="fas fa-calendar-check"></i> Tu Reserva</h3>
+                <div class="booking-steps-indicator">
+                    <div class="step-dot active" title="Búsqueda"></div>
+                    <div class="step-dot" title="Selección"></div>
+                    <div class="step-dot" title="Datos"></div>
+                    <div class="step-dot" title="Confirmación"></div>
+                </div>
+            </div>
+            
+            <div class="booking-widget-body">
+                
+                <!-- Step 1: Search -->
+                <div id="booking-step-1" class="booking-step-content active">
+                    <form id="booking-search-form" class="booking-search-form">
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Lugar de Retiro</label>
+                            <select id="booking-pickup-location" class="form-input" required>
+                                <option value="Salta Ciudad">Salta Ciudad</option>
+                                <option value="Aeropuerto Salta">Aeropuerto Salta</option>
+                                <option value="Jujuy Ciudad">Jujuy Ciudad</option>
+                                <option value="Aeropuerto Jujuy">Aeropuerto Jujuy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Lugar de Devolución</label>
+                            <select id="booking-dropoff-location" class="form-input" required>
+                                <option value="Salta Ciudad">Salta Ciudad</option>
+                                <option value="Aeropuerto Salta">Aeropuerto Salta</option>
+                                <option value="Jujuy Ciudad">Jujuy Ciudad</option>
+                                <option value="Aeropuerto Jujuy">Aeropuerto Jujuy</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="far fa-calendar-alt"></i> Retiro (Fecha y Hora)</label>
+                            <div style="display:flex; gap: 5px;">
+                                <input type="date" id="booking-start-date" class="form-input" style="flex:2;" required>
+                                <input type="time" id="booking-start-time" class="form-input" style="flex:1;" value="10:00" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="far fa-calendar-check"></i> Devolución (Fecha y Hora)</label>
+                            <div style="display:flex; gap: 5px;">
+                                <input type="date" id="booking-end-date" class="form-input" style="flex:2;" required>
+                                <input type="time" id="booking-end-time" class="form-input" style="flex:1;" value="10:00" required>
+                            </div>
+                        </div>
+                        
+                        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 10px;">
+                            <button type="submit" id="booking-search-btn" class="btn btn-search">
+                                Buscar Vehículos <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Step 2: Select Vehicle -->
+                <div id="booking-step-2" class="booking-step-content">
+                    <div class="section-header" style="margin-bottom: 2rem;">
+                        <h2>Seleccioná tu vehículo</h2>
+                    </div>
+                    
+                    <div id="category-filters" class="category-filters">
+                        <!-- Filters will be injected here via JS -->
+                    </div>
+                    
+                    <div id="vehicles-grid" class="vehicles-grid">
+                        <!-- Vehicles will be injected here via JS -->
+                        <div style="text-align: center; padding: 3rem; grid-column: 1/-1;">
+                            <div class="spinner spinner-dark"></div>
+                            <p style="margin-top: 1rem; color: var(--color-gray-500);">Cargando flota disponible...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-nav">
+                        <button type="button" class="btn btn-outline" data-action="back">
+                            <i class="fas fa-arrow-left"></i> Volver a búsqueda
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Customer Data -->
+                <div id="booking-step-3" class="booking-step-content">
+                    <div class="section-header" style="margin-bottom: 2rem;">
+                        <h2>Completá tus datos</h2>
+                    </div>
+                    
+                    <div class="customer-form">
+                        <div id="booking-summary" class="booking-summary">
+                            <!-- Summary injected via JS -->
+                        </div>
+                        
+                        <form id="customer-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nombre *</label>
+                                    <input type="text" id="client-name" class="form-input" required placeholder="Tu nombre">
+                                </div>
+                                <div class="form-group">
+                                    <label>Apellido *</label>
+                                    <input type="text" id="client-lastname" class="form-input" required placeholder="Tu apellido">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row" style="margin-top: 1rem;">
+                                <div class="form-group">
+                                    <label>Teléfono / WhatsApp *</label>
+                                    <input type="tel" id="client-phone" class="form-input" required placeholder="+54 9...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="client-email" class="form-input" placeholder="tu@email.com">
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Method Selector -->
+                            <div class="form-row" style="margin-top: 1rem;">
+                                <div class="form-group" style="flex: 100%;">
+                                    <label><i class="fas fa-wallet"></i> Método de pago de la seña *</label>
+                                    <div style="display: flex; gap: 15px; margin-top: 5px;">
+                                        <label style="flex: 1; display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#009ee3'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                            <input type="radio" name="payment-method" value="mercadopago" checked style="accent-color: #009ee3;">
+                                            <span style="font-weight: 500; color: #334155;">Mercado Pago (Tarjetas / Dinero en cuenta)</span>
+                                        </label>
+                                        <label style="flex: 1; display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#003087'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                            <input type="radio" name="payment-method" value="paypal" style="accent-color: #003087;">
+                                            <span style="font-weight: 500; color: #334155;">PayPal (Extranjeros)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Terms & Conditions Checkbox -->
+                            <div style="margin-top: 1.2rem; padding: 1rem 1.2rem; background: #fef9f0; border: 1px solid #f5e6cc; border-radius: 10px;">
+                                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.9rem; color: #333; line-height: 1.4; margin: 0;">
+                                    <input type="checkbox" id="terms-checkbox" style="margin-top: 3px; width: 18px; height: 18px; accent-color: #f97316; cursor: pointer; flex-shrink: 0;">
+                                    <span>
+                                        Acepto los 
+                                        <a href="#" id="open-terms-modal" style="color: #f97316; font-weight: 600; text-decoration: underline;">Términos y Condiciones</a> 
+                                        del servicio de alquiler de Alma Rent a Car. *
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div class="booking-nav" style="margin-top: 2rem;">
+                                <button type="button" class="btn btn-outline" data-action="back">
+                                    <i class="fas fa-arrow-left"></i> Cambiar auto
+                                </button>
+                                <button type="submit" id="booking-submit-btn" class="btn btn-primary">
+                                    <i class="fas fa-check-circle"></i> Confirmar Reserva
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div id="terms-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10000; justify-content:center; align-items:center; padding:1.5rem;">
+        <div style="background:white; border-radius:16px; max-width:750px; width:100%; max-height:85vh; display:flex; flex-direction:column; box-shadow:0 25px 60px rgba(0,0,0,0.3); overflow:hidden;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:1.2rem 1.5rem; border-bottom:1px solid #eee; flex-shrink:0;">
+                <h3 style="margin:0; font-family:var(--font-heading); font-size:1.15rem; color:#1e293b;">
+                    <i class="fas fa-file-contract" style="color:#f97316; margin-right:8px;"></i>Términos y Condiciones
+                </h3>
+                <button id="close-terms-modal" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#94a3b8; padding:4px 8px; border-radius:8px; transition:all 0.2s;" onmouseover="this.style.background='#f1f5f9'; this.style.color='#1e293b'" onmouseout="this.style.background='none'; this.style.color='#94a3b8'">&times;</button>
+            </div>
+            <div id="terms-modal-content" style="padding:1.5rem; overflow-y:auto; flex:1; font-size:0.92rem; line-height:1.7; color:#334155;">
+                <div style="text-align:center; padding:2rem;">
+                    <div class="spinner spinner-dark"></div>
+                    <p style="margin-top:1rem; color:#94a3b8;">Cargando términos...</p>
+                </div>
+            </div>
+            <div style="padding:1rem 1.5rem; border-top:1px solid #eee; text-align:right; flex-shrink:0;">
+                <button id="accept-terms-btn" class="btn btn-primary" style="padding:10px 28px; font-size:0.95rem;">
+                    <i class="fas fa-check"></i> Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+                
+                <!-- Step 4: Success -->
+                <div id="booking-step-4" class="booking-step-content">
+                    <div class="booking-success">
+                        <div class="booking-success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h3>¡Solicitud Recibida!</h3>
+                        <p>Hemos registrado tu solicitud de reserva <strong id="success-booking-id"></strong>. En breve, un miembro de nuestro equipo se contactará con vos para coordinar los detalles y la confirmación final.</p>
+                        
+                        <div style="margin-top: 3rem;">
+                            <button id="new-booking-btn" class="btn btn-outline">Hacer otra reserva</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="section-padding benefits-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Ventajas</span>
+                <h2>¿Por qué elegir Alma?</h2>
+                <p>Nos enfocamos en brindarte la mejor experiencia para que tu viaje por el norte sea inolvidable y sin preocupaciones.</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card reveal reveal-delay-1">
+                    <div class="benefit-icon"><i class="fas fa-car-side"></i></div>
+                    <h3>Flota Moderna</h3>
+                    <p>Vehículos recientes y rigurosamente mantenidos para garantizar tu seguridad en todo tipo de rutas.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-2">
+                    <div class="benefit-icon"><i class="fas fa-user-friends"></i></div>
+                    <h3>Atención Personalizada</h3>
+                    <p>Tratamos a cada cliente como amigo, brindando soporte, cercanía y recomendaciones locales.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-3">
+                    <div class="benefit-icon"><i class="fas fa-tags"></i></div>
+                    <h3>Tarifas Transparentes</h3>
+                    <p>Precios claros desde el primer momento. Sin cargos ocultos ni sorpresas al finalizar.</p>
+                </div>
+                <div class="benefit-card reveal reveal-delay-4">
+                    <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Cobertura Total</h3>
+                    <p>Asistencia en ruta 24/7 y opciones de seguros flexibles para que viajes con total tranquilidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding" style="background: var(--color-white);">
+        <div class="container-wide">
+            <div class="about-grid">
+                <div class="about-content reveal-left">
+                    <span class="section-label">Conocenos</span>
+                    <h2>Expertos locales en el Norte Argentino</h2>
+                    <p>En <strong>Alma Rent a Car</strong> no somos solo una empresa de alquiler, somos anfitriones. Nuestra base está en el corazón del norte, lo que nos permite ofrecerte un servicio auténtico, experto y adaptado a los caminos de la región.</p>
+                    
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Asesoramiento sobre rutas, clima y mejores destinos (Quebrada, Valles, Puna).</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Autos preparados técnica y mecánicamente para la altura y caminos de ripio.</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Flexibilidad total y comunicación directa vía WhatsApp durante todo tu viaje.</span>
+                        </div>
+                    </div>
+                    
+                    <a href="nosotros.html" class="btn btn-outline">Conocé nuestra historia</a>
+                </div>
+                <div class="about-image reveal-right">
+                    <img src="img/nosotros-bg.png" alt="Paisaje de Jujuy, Norte Argentino">
+                    <div class="about-image-overlay">
+                        <div class="about-image-stat">+10</div>
+                        <div>Años recorriendo el norte</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Corporate Section -->
+    <section class="section-padding corporate-section">
+        <div class="container">
+            <div class="corporate-content reveal">
+                <span class="section-label" style="color: var(--color-white);">Corporativo</span>
+                <h2>Alma para Empresas</h2>
+                <p>Soluciones de movilidad corporativa diseñadas para agilizar tus traslados de negocios, visitas técnicas a mineras y gestión de flotas para ejecutivos en la región NOA.</p>
+                
+                <div class="corporate-features">
+                    <div class="corporate-feature"><i class="fas fa-file-invoice-dollar"></i> Facturación empresarial tipo A y cuentas corrientes</div>
+                    <div class="corporate-feature"><i class="fas fa-handshake"></i> Tarifas corporativas preferenciales por convenios</div>
+                    <div class="corporate-feature"><i class="fas fa-truck-pickup"></i> Vehículos especiales (Pick-ups 4x4) equipados bajo normas mineras</div>
+                </div>
+                
+                <div class="corporate-badges">
+                    <div class="corporate-badge">Sin Cargo por Conductor Adicional</div>
+                    <div class="corporate-badge">Soporte Operativo 24/7</div>
+                    <div class="corporate-badge">Mantenimiento Preventivo In Situ</div>
+                </div>
+                
+                <div style="margin-top: 3rem;">
+                    <a href="contacto.html" class="btn btn-primary">Contactar área corporativa</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Reseñas</span>
+                <h2>Experiencias reales</h2>
+                <p>Lo que dicen nuestros clientes tras recorrer el norte con nosotros.</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal reveal-delay-1">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Excelente servicio. El auto estaba impecable, un Corolla nuevito, y muy cómodo para recorrer la Quebrada de Humahuaca. Los chicos fueron muy amables al darnos recomendaciones sobre los horarios para evitar el tráfico."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">M</div>
+                        <div>
+                            <div class="testimonial-name">María González</div>
+                            <div class="testimonial-role">Turista de Buenos Aires</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card reveal reveal-delay-2">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Necesitaba movilidad urgente para un viaje de trabajo a una mina en la Puna. Alma Rent a Car gestionó una camioneta 4x4 rápidamente con todo el equipamiento exigido. La facturación a la empresa fue perfecta."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">C</div>
+                        <div>
+                            <div class="testimonial-name">Carlos Ruiz</div>
+                            <div class="testimonial-role">Ingeniero Minero - Córdoba</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card reveal reveal-delay-3">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"La seguridad que transmiten es única. Viajé con mi familia desde Brasil, tuvimos un pequeño percance con una rueda y la asistencia fue inmediata. Sentimos que estábamos en buenas manos. Precios justos."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">S</div>
+                        <div>
+                            <div class="testimonial-name">Sofía Pereyra</div>
+                            <div class="testimonial-role">Turista de Brasil</div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+            
+            <div style="text-align: center; margin-top: 3rem;" class="reveal">
+                <a href="https://www.google.com/search?q=Alma+Rent+A+Car&stick=H4sIAAAAAAAA_-NgU1I1qLA0MUwySDMxNzdOTrIwMkuxMqgwTDM1N7I0TktKMjQ0TTE3WMTK75iTm6gQlJpXouCo4JxYBACsgy3dOwAAAA&hl=es-419&mat=CTmgxrHEhPnsElcBTVDHnrLjoygaWpGfdvkUTIzp7yFUVplCqpSbNodiw0I7MtEX3m2QcX-PIr0jxxskAW2b2R7qYTRP32Bxn8_ABTskEUOXcBCOeC8ZtTQzqj2zC1T2zyw&authuser=0" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="border-color: #4285F4; color: #4285F4; display: inline-flex; align-items: center; gap: 10px;">
+                    <i class="fab fa-google"></i> Leé nuestras más de 150 reseñas en Google
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-section reveal">
+        <div class="container">
+            <h2>¿Listo para tu aventura en el Norte?</h2>
+            <p>Reservá hoy mismo y asegurá tu vehículo al mejor precio garantizado.</p>
+            <a href="#reservas" class="btn btn-primary btn-lg">Buscar disponibilidad ahora</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="img/logo.png" alt="Alma Rent a Car" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <h3 style="display:none; font-family:var(--font-heading); color:white; margin:0;">ALMA RENT A CAR</h3>
+                    <p>Tu aliado de confianza para recorrer Salta, Jujuy y todo el Norte Argentino. Flota moderna, atención personalizada y tarifas sin sorpresas.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="flota.html">Nuestra Flota</a></li>
+                        <li><a href="index.html#reservas">Reservas</a></li>
+                        <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Legales y Ayuda</h4>
+                    <ul class="footer-links">
+                        <li><a href="terminos.html">Términos y Condiciones</a></li>
+                        <li><a href="privacidad.html">Política de Privacidad</a></li>
+                        <li><a href="faq.html">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Detalles de Seguros</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Av. Gral. Güemes 500<br>Salta Capital, 4400<br>Argentina</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+54 9 387 123 4567</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>reservas@almarentacar.com.ar</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; <span id="current-year"></span> Alma Rent a Car. Todos los derechos reservados.</div>
+                <div class="footer-legal-links">
+                    <a href="terminos.html">Términos</a>
+                    <a href="privacidad.html">Privacidad</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>

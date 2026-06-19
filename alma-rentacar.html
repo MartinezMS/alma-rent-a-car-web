@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alma Rent a Car | Alquiler de autos en el Norte Argentino</title>
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           VARIABLES Y RESET
+           ========================================= */
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-orange: #ff6600;
+            --primary-orange-hover: #e65c00;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --bg-light: #f9f9f9;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Sombra premium */
+            --radius: 12px; /* Bordes más redondeados para estilo moderno */
+            --transition: all 0.3s ease;
+            --nav-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* =========================================
+           COMPONENTES UI
+           ========================================= */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-orange);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--white);
+            color: var(--primary-black);
+        }
+
+        .btn-outline-dark {
+            border: 2px solid var(--primary-black);
+            color: var(--primary-black);
+        }
+
+        .btn-outline-dark:hover {
+            background-color: var(--primary-black);
+            color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .section-padding {
+            padding: 5rem 0;
+        }
+
+        /* Animaciones de Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           HEADER
+           ========================================= */
+        header {
+            height: var(--nav-height);
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--primary-black);
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-orange);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .hero {
+            height: 85vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), 
+                        url('https://picsum.photos/seed/salta_route/1920/1080.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding-top: var(--nav-height);
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* =========================================
+           WIDGET DE RESERVAS (DISEÑO TIPO TARJETA)
+           ========================================= */
+        .booking-widget-container {
+            /* Posicionamiento flotante sobre el Hero */
+            margin-top: -80px; 
+            position: relative;
+            z-index: 10;
+            margin-bottom: 5rem;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: center; /* Centrado para pantallas grandes */
+        }
+
+        .booking-frame-wrapper {
+            background: var(--white);
+            border-radius: var(--radius);
+            /* Borde superior naranja para identidad de marca */
+            border-top: 6px solid var(--primary-orange); 
+            box-shadow: var(--shadow-lg); /* Sombra pronunciada */
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px; /* Limitar ancho para que no sea tan ancho en desktop */
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .booking-frame-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        .booking-frame-wrapper iframe {
+            border: none;
+            width: 100%;
+            /* Altura ajustada para no ser excesiva */
+            height: 750px; 
+            display: block;
+        }
+
+        /* =========================================
+           BENEFICIOS
+           ========================================= */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border: 1px solid #eee;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--primary-orange);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+        }
+
+        /* =========================================
+           FLOTA DESTACADA
+           ========================================= */
+        .fleet-section {
+            background-color: var(--bg-light);
+        }
+
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .fleet-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fleet-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .fleet-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fleet-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .fleet-card:hover .fleet-img-container img {
+            transform: scale(1.05);
+        }
+
+        .fleet-details {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fleet-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-black);
+        }
+
+        .fleet-category {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .fleet-specs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .fleet-specs span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fleet-price {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .price-tag {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-black);
+        }
+
+        .price-tag span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        /* =========================================
+           EXPERIENCIA LOCAL
+           ========================================= */
+        .local-experience {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .local-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .local-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .local-features li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark);
+        }
+
+        .local-features i {
+            color: var(--primary-orange);
+        }
+
+        .local-img {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .local-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 400px;
+        }
+
+        /* =========================================
+           EMPRESAS
+           ========================================= */
+        .corporate-section {
+            background-color: var(--primary-black);
+            color: var(--white);
+        }
+
+        .corporate-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .corporate-content h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .corporate-content p {
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        .corporate-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 600;
+        }
+
+        /* =========================================
+           TESTIMONIOS
+           ========================================= */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 2rem;
+            color: var(--primary-orange);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary-black);
+        }
+
+        .testimonial-role {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* =========================================
+           CTA FINAL
+           ========================================= */
+        .final-cta {
+            background: linear-gradient(135deg, var(--primary-black) 0%, #333 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: #111;
+            color: #fff;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-orange);
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-orange);
+            padding-left: 5px;
+        }
+
+        .contact-info li {
+            display: flex;
+            gap: 10px;
+            color: #aaa;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .contact-info i {
+            color: var(--primary-orange);
+            margin-top: 4px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-orange);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* =========================================
+           MEDIA QUERIES
+           ========================================= */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .local-experience {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .local-img {
+                order: -1;
+            }
+            .booking-widget-container {
+                margin-top: -40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: var(--nav-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--nav-height));
+                background-color: var(--white);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.4s;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .booking-frame-wrapper iframe {
+                height: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="https://z-cdn-media.chatglm.cn/files/c5b2e31d-62e0-4d71-a071-167cf737a9ea.jpg?auth_key=1869095384-c26d886c3a814a8b86c626aaad48718c-0-337336808f4631d599a7cba9dfb8d485" alt="Alma Rent a Car Logo" class="logo-img">
+            </a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                    <li><a href="#flota" class="nav-link">Flota</a></li>
+                    <li><a href="#reservas" class="nav-link">Reservas</a></li>
+                    <li><a href="#empresas" class="nav-link">Empresas</a></li>
+                    <li><a href="#nosotros" class="nav-link">Nosotros</a></li>
+                    <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                    <li><a href="#reservas" class="btn btn-primary">Reservar ahora</a></li>
+                </ul>
+            </nav>
+
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container hero-content">
+            <h1>Alquilá tu auto en el Norte Argentino con confianza</h1>
+            <p>Movete libremente por Jujuy, Salta y la región</p>
+            <div class="hero-buttons">
+                <a href="#reservas" class="btn btn-primary">Reservar ahora</a>
+                <a href="#flota" class="btn btn-secondary">Ver flota</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Widget de Reservas (IFRAME CON DISEÑO INTEGRADO) -->
+    <div id="reservas" class="booking-widget-container reveal">
+        <div class="booking-frame-wrapper">
+            <!-- 
+                 SOLUCIÓN TÉCNICA AVANZADA:
+                 He añadido parámetros a la URL (?theme=alma&primary=ff6600).
+                 
+                 Para que esto funcione realmente, en tu app de React/Vue (localhost:5173)
+                 debes leer estos parámetros y aplicarlos a tus variables CSS.
+                 
+                 Ejemplo en React:
+                 const searchParams = new URLSearchParams(window.location.search);
+                 const theme = searchParams.get('theme'); 
+            -->
+            <iframe 
+              src="http://localhost:5173/public-booking?theme=alma&color=ff6600" 
+              width="100%" 
+              height="750px" 
+              style="border:none;" 
+              title="Reserva Alma Rent">
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Beneficios -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>¿Por qué elegir Alma?</h2>
+                <p>Tu viaje seguro y sin complicaciones</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card reveal">
+                    <i class="fas fa-car benefit-icon"></i>
+                    <h3>Flota Moderna</h3>
+                    <p>Vehículos recientes y mantenidos para garantizar tu seguridad y comodidad en la ruta.</p>
+                </div>
+                <div class="benefit-card reveal">
+                    <i class="fas fa-users benefit-icon"></i>
+                    <h3>Atención Personalizada</h3>
+                    <p>Somos una empresa local que trata a cada cliente como amigo, brindando cercanía y apoyo.</p>
+                </div>
+                <div class="benefit-card reveal">
+                    <i class="fas fa-tags benefit-icon"></i>
+                    <h3>Tarifas Claras</h3>
+                    <p>Transparencia total. Sin cargos ocultos ni sorpresas al finalizar el alquiler.</p>
+                </div>
+                <div class="benefit-card reveal">
+                    <i class="fas fa-shield-alt benefit-icon"></i>
+                    <h3>Cobertura Total</h3>
+                    <p>Seguros opcionales flexibles y asistencia en ruta en todo el territorio del norte.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flota Destacada -->
+    <section id="flota" class="section-padding fleet-section">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Nuestra Flota</h2>
+                <p>El auto perfecto para cada aventura</p>
+            </div>
+            <div class="fleet-grid">
+                <!-- Auto 1 -->
+                <div class="fleet-card reveal">
+                    <div class="fleet-img-container">
+                        <img src="https://picsum.photos/seed/auto1/600/400" alt="Auto Económico">
+                    </div>
+                    <div class="fleet-details">
+                        <h3 class="fleet-title">Fiat Mobi o Similar</h3>
+                        <p class="fleet-category">Económico</p>
+                        <div class="fleet-specs">
+                            <span><i class="fas fa-user"></i> 5</span>
+                            <span><i class="fas fa-suitcase"></i> 2</span>
+                            <span><i class="fas fa-cog"></i> M</span>
+                            <span><i class="fas fa-snowflake"></i> A/A</span>
+                        </div>
+                        <div class="fleet-price">
+                            <div class="price-tag">USD 45<span>/día</span></div>
+                            <a href="#reservas" class="btn btn-outline-dark" onclick="selectCar('Económico')">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Auto 2 -->
+                <div class="fleet-card reveal">
+                    <div class="fleet-img-container">
+                        <img src="https://picsum.photos/seed/auto2/600/400" alt="Auto Mediano">
+                    </div>
+                    <div class="fleet-details">
+                        <h3 class="fleet-title">Toyota Corolla o Similar</h3>
+                        <p class="fleet-category">Mediano</p>
+                        <div class="fleet-specs">
+                            <span><i class="fas fa-user"></i> 5</span>
+                            <span><i class="fas fa-suitcase"></i> 3</span>
+                            <span><i class="fas fa-cog"></i> A</span>
+                            <span><i class="fas fa-snowflake"></i> A/A</span>
+                        </div>
+                        <div class="fleet-price">
+                            <div class="price-tag">USD 65<span>/día</span></div>
+                            <a href="#reservas" class="btn btn-outline-dark" onclick="selectCar('Mediano')">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Auto 3 -->
+                <div class="fleet-card reveal">
+                    <div class="fleet-img-container">
+                        <img src="https://picsum.photos/seed/auto3/600/400" alt="SUV">
+                    </div>
+                    <div class="fleet-details">
+                        <h3 class="fleet-title">Renault Duster o Similar</h3>
+                        <p class="fleet-category">SUV 4x4</p>
+                        <div class="fleet-specs">
+                            <span><i class="fas fa-user"></i> 5</span>
+                            <span><i class="fas fa-suitcase"></i> 4</span>
+                            <span><i class="fas fa-cog"></i> A</span>
+                            <span><i class="fas fa-snowflake"></i> A/A</span>
+                        </div>
+                        <div class="fleet-price">
+                            <div class="price-tag">USD 90<span>/día</span></div>
+                            <a href="#reservas" class="btn btn-outline-dark" onclick="selectCar('SUV')">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiencia Local -->
+    <section id="nosotros" class="section-padding">
+        <div class="container">
+            <div class="local-experience">
+                <div class="local-content reveal">
+                    <h2>Conocedores del Norte</h2>
+                    <p>En <strong>Alma Rent a Car</strong>, no solo alquilamos autos, somos parte de la región. Nuestra base está en el corazón del norte argentino, lo que nos permite ofrecerte un servicio auténtico y experto.</p>
+                    <ul class="local-features">
+                        <li><i class="fas fa-check-circle"></i> Asesoramiento personalizado sobre rutas y destinos.</li>
+                        <li><i class="fas fa-check-circle"></i> Autos preparados para los caminos de quebrada y altura.</li>
+                        <li><i class="fas fa-check-circle"></i> Flexibilidad para cambios de itinerario.</li>
+                    </ul>
+                    <a href="#contacto" class="btn btn-primary" style="margin-top: 2rem;">Contactar al equipo</a>
+                </div>
+                <div class="local-img reveal">
+                    <img src="https://picsum.photos/seed/jujuy_landscape/800/600" alt="Paisaje Norte Argentino">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Empresas -->
+    <section id="empresas" class="section-padding corporate-section">
+        <div class="container corporate-content reveal">
+            <h2>Alma para Empresas</h2>
+            <p>Soluciones de movilidad corporativa diseñadas para agilizar tus traslados de negocios. Gestionamos flotas para ejecutivos y visitas técnicas en la región.</p>
+            <ul class="local-features" style="justify-content: center; list-style: none;">
+                <li style="color:white;"><i class="fas fa-file-invoice" style="color:var(--primary-orange)"></i> Facturación empresarial mensual</li>
+                <li style="color:white;"><i class="fas fa-handshake" style="color:var(--primary-orange)"></i> Tarifas corporativas preferenciales</li>
+                <li style="color:white;"><i class="fas fa-car-side" style="color:var(--primary-orange)"></i> Vehículos de categoría superior</li>
+            </ul>
+            <div class="corporate-badges">
+                <span class="badge">Sin Cargo por Conductor Adicional</span>
+                <span class="badge">Cobertura Amplia</span>
+                <span class="badge">Soporte 24/7</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Lo que dicen nuestros clientes</h2>
+                <p>Experiencias reales en el norte argentino</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="testimonial-text">"Excelente servicio. El auto estaba impecable y muy cómodo para recorrer la Quebrada de Humahuaca. El personal fue muy amable al darnos recomendaciones."</p>
+                    <div class="testimonial-author">María González</div>
+                    <div class="testimonial-role">Turista de Buenos Aires</div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="testimonial-text">"Necesitaba movilidad para un viaje de trabajo por Salta y Jujuy. Alma Rent a Car gestionó todo rápidamente. La facturación fue perfecta."</p>
+                    <div class="testimonial-author">Carlos Ruiz</div>
+                    <div class="testimonial-role">Empresario - Córdoba</div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="testimonial-text">"La seguridad que transmiten es única. Viajé con mi familia y sentimos que estábamos en buenas manos. Precios justos y transparentes."</p>
+                    <div class="testimonial-author">Sofía Pereyra</div>
+                    <div class="testimonial-role">Turista de Brasil</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="final-cta reveal">
+        <div class="container">
+            <h2>Empezá tu viaje con Alma Rent a Car</h2>
+            <a href="#reservas" class="btn btn-primary">Reservar ahora</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="https://z-cdn-media.chatglm.cn/files/c5b2e31d-62e0-4d71-a071-167cf737a9ea.jpg?auth_key=1869095384-c26d886c3a814a8b86c626aaad48718c-0-337336808f4631d599a7cba9dfb8d485" alt="Alma Rent a Car" style="height: 40px; margin-bottom: 20px; filter: grayscale(100%) brightness(200%);"> 
+                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                        Tu aliado de confianza para recorrer el Norte Argentino. Flota nueva, atención personalizada y el mejor servicio local.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#flota">Nuestra Flota</a></li>
+                        <li><a href="#reservas">Reservas</a></li>
+                        <li><a href="#empresas">Empresas</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Información</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Seguros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Gral. Güemes 500, Salta Capital</li>
+                        <li><i class="fas fa-phone"></i> +54 9 387 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> reservas@almarentacar.com.ar</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Alma Rent a Car. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // MENÚ HAMBURGUESA
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            if(navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.querySelector('i').classList.remove('fa-times');
+                hamburger.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // ANIMACIONES SCROLL
+        window.addEventListener('scroll', reveal);
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var revealTop = reveals[i].getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        reveal();
+
+        // SCROLL A RESERVAS
+        function selectCar(type) {
+            document.getElementById('reservas').scrollIntoView({ behavior: 'smooth' });
+            // Nota: Como ahora es un iframe, no podemos inyectar el valor del auto directamente
+            // a menos que uses la API postMessage en tu app localhost:5173
+            alert(`Has seleccionado: ${type}. Por favor, elige esta categoría en el buscador.`);
+        }
+    </script>
+</body>
+</html>

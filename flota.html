@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conocé la flota completa de vehículos de Alma Rent a Car. Autos económicos, medianos, sedanes y camionetas 4x4 disponibles para tu viaje al Norte Argentino.">
+    <title>Nuestra Flota de Vehículos | Alma Rent a Car</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container-wide nav-container">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="Alma Rent a Car" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; color:var(--color-primary);">ALMA</span>
+            </a>
+            
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="flota.html" class="nav-link active">Flota</a>
+                <a href="nosotros.html" class="nav-link">Nosotros</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+                <a href="index.html#reservas" class="btn btn-primary nav-cta">Reservar</a>
+            </nav>
+        </div>
+        <div class="nav-overlay"></div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a> / <span>Flota</span>
+            </div>
+            <h1 class="reveal">Nuestra Flota</h1>
+            <p class="reveal reveal-delay-1">Elegí el vehículo ideal para tu próxima aventura en el Norte.</p>
+        </div>
+    </div>
+
+    <!-- Fleet Section -->
+    <section class="section-padding fleet-section">
+        <div class="container-wide">
+            
+            <!-- JavaScript will populate this section based on API data, but we provide a static fallback/initial view -->
+            <div id="fleet-page-filters" class="fleet-filters reveal">
+                <button class="category-filter-btn active" data-category="all">Todos los vehículos</button>
+                <button class="category-filter-btn" data-category="Económico">Económicos</button>
+                <button class="category-filter-btn" data-category="Mediano">Medianos</button>
+                <button class="category-filter-btn" data-category="SUV">SUVs / Camionetas</button>
+            </div>
+
+            <div id="fleet-page-grid" class="fleet-page-grid reveal reveal-delay-2">
+                <!-- Fallback content while loading from API -->
+                <div style="text-align: center; padding: 4rem; grid-column: 1/-1;">
+                    <div class="spinner spinner-dark"></div>
+                    <p style="margin-top: 1rem; color: var(--color-gray-500);">Cargando vehículos disponibles...</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>¿Encontraste el auto que buscabas?</h2>
+            <p>Verificá disponibilidad y reservá en simples pasos.</p>
+            <a href="index.html#reservas" class="btn btn-primary btn-lg">Cotizar y Reservar</a>
+        </div>
+    </section>
+
+    <!-- Footer (Simplified for brevity, matches index) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div>&copy; <span id="current-year"></span> Alma Rent a Car. Todos los derechos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+        // Specific logic for the fleet page to load all vehicles
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('fleet-page-grid');
+            const filters = document.getElementById('fleet-page-filters');
+            
+            try {
+                const response = await fetch('https://alma-rent-a-car.onrender.com/api/public/vehicles');
+                if (!response.ok) throw new Error('Error de red');
+                
+                const vehicles = await response.json();
+                
+                // Extract categories
+                const categories = [...new Set(vehicles.map(v => v.category?.name).filter(Boolean))];
+                
+                // Render filters
+                let filterHtml = '<button class="category-filter-btn active" data-category="all">Todos</button>';
+                categories.forEach(cat => {
+                    filterHtml += `<button class="category-filter-btn" data-category="${cat}">${cat}</button>`;
+                });
+                filters.innerHTML = filterHtml;
+                
+                // Function to render grid
+                const renderGrid = (items) => {
+                    if (items.length === 0) {
+                        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No hay vehículos.</div>';
+                        return;
+                    }
+                    
+                    grid.innerHTML = items.map(v => `
+                        <div class="fleet-card">
+                            <div class="fleet-card-img">
+                                ${v.category?.name ? `<span class="fleet-card-badge">${v.category.name}</span>` : ''}
+                                <i class="fas fa-car" style="font-size: 5rem; color: var(--color-gray-300); position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></i>
+                            </div>
+                            <div class="fleet-card-body">
+                                <h3 class="fleet-card-title">${v.make || ''} ${v.model || ''}</h3>
+                                <div class="fleet-card-category">${v.year || ''} | ${v.color || ''}</div>
+                                
+                                <div class="fleet-card-specs">
+                                    <div class="fleet-spec">
+                                        <i class="fas fa-user"></i> <span>5</span>
+                                    </div>
+                                    <div class="fleet-spec">
+                                        <i class="fas fa-suitcase"></i> <span>2-3</span>
+                                    </div>
+                                    <div class="fleet-spec">
+                                        <i class="fas fa-cog"></i> <span>${v.transmission === 'AUTOMATIC' ? 'Auto' : 'Manual'}</span>
+                                    </div>
+                                    <div class="fleet-spec">
+                                        <i class="fas fa-snowflake"></i> <span>Sí</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="fleet-card-footer">
+                                    <div class="fleet-price">
+                                        <span class="fleet-price-unit">USD</span>
+                                        <span class="fleet-price-amount">$${v.pricePerDay || 0}</span>
+                                        <span class="fleet-price-unit">/día</span>
+                                    </div>
+                                    <a href="index.html#reservas" class="btn btn-primary btn-sm">Reservar</a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                };
+                
+                // Initial render
+                renderGrid(vehicles);
+                
+                // Bind filters
+                filters.querySelectorAll('.category-filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        filters.querySelectorAll('.category-filter-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        const cat = e.target.dataset.category;
+                        if (cat === 'all') {
+                            renderGrid(vehicles);
+                        } else {
+                            renderGrid(vehicles.filter(v => v.category?.name === cat));
+                        }
+                    });
+                });
+                
+            } catch (error) {
+                console.error(error);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: red;">Error al cargar la flota. Por favor intente más tarde.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

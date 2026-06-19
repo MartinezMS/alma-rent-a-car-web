@@ -1,0 +1,62 @@
+Resumen del Proyecto: Nueva Web Alma Rent a Car
+He completado el desarrollo y rediseño completo de la página web de Alma Rent a Car aplicando un enfoque moderno y profesional. Aquí tienes un resumen de todo lo que se implementó.
+
+¿Qué cambió?
+El proyecto pasó de tener un único archivo HTML con un iframe a un ecosistema web estático multi-página, completamente integrado con tu backend.
+
+1. Nuevo Motor de Reservas Integrado
+En lugar del widget embebido (iframe) que presentaba limitaciones, desarrollé un motor de reservas estilo Hertz:
+
+Interfaz en 4 pasos: Búsqueda → Selección de Auto → Datos del Cliente → Confirmación.
+Integración API directa: Se conecta mediante JavaScript nativo (fetch) a tu backend de Render https://alma-rent-a-car.onrender.com/api/public/...
+Filtros por categoría interactivos y cálculo de tarifas en tiempo real.
+2. Diseño Estético Premium
+Implementé una paleta de colores coherente (Naranja #ff6600 y Negro #1a1a1a).
+Utilicé fuentes modernas como Outfit para títulos e Inter para textos legibles.
+Agregué efectos como glassmorphism, sombras suaves (box-shadow), animaciones al hacer scroll (reveal) y micro-interacciones.
+3. Sistema Multi-Página (SEO Ready)
+Se crearon todas las páginas necesarias para un sitio profesional y con excelente posicionamiento:
+
+Inicio (
+index.html
+)
+: Página principal con el motor de reservas.
+Flota (
+flota.html
+)
+: Catálogo de vehículos que se alimenta en tiempo real de tu base de datos.
+Nosotros (
+nosotros.html
+)
+: Historia y valores de la empresa.
+Contacto (
+contacto.html
+)
+: Formulario y datos de oficina.
+FAQ (
+faq.html
+)
+: Preguntas frecuentes interactivas.
+Páginas Legales: 
+Términos y Condiciones
+ y 
+Política de Privacidad
+.
+4. Optimización SEO
+sitemap.xml y robots.txt incluidos.
+Etiquetas Meta optimizadas (título, descripción, palabras clave) en todas las páginas.
+Implementación de Schema.org (AutoRental) para que Google entienda mejor tu negocio.
+Open Graph tags para compartir correctamente en redes sociales (Facebook, WhatsApp).
+5. Backend CORS
+Modifiqué la configuración CORS en tu servidor Backend (index.js) para que acepte peticiones desde el frontend estático que alojarás en GoDaddy (agregando almarentacar.com.ar).
+
+TIP
+
+Compatibilidad GoDaddy Todo el contenido generado dentro de la carpeta Alma Pagina Web son archivos estáticos (HTML, CSS, JS, IMG). No necesitás instalar Node.js ni bases de datos en GoDaddy. Solo tenés que subir los archivos tal cual están mediante el panel de control (CPanel/File Manager) o por FTP, y la web funcionará instantáneamente conectándose a tu backend en Render.
+
+IMPORTANT
+
+Pendiente para vos:
+
+Recordá colocar tu archivo logo.png dentro de la carpeta img/ para que se reemplace en la web.
+Podés abrir directamente el archivo index.html en tu navegador para ver la página y probar las reservas.

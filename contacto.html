@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contactate con Alma Rent a Car. Consultas, reservas, información corporativa. Encontranos en Salta Capital.">
+    <title>Contacto | Alma Rent a Car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container-wide nav-container">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="Alma Rent a Car" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; color:var(--color-primary);">ALMA</span>
+            </a>
+            <div class="hamburger"><i class="fas fa-bars"></i></div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="flota.html" class="nav-link">Flota</a>
+                <a href="nosotros.html" class="nav-link">Nosotros</a>
+                <a href="contacto.html" class="nav-link active">Contacto</a>
+                <a href="index.html#reservas" class="btn btn-primary nav-cta">Reservar</a>
+            </nav>
+        </div>
+        <div class="nav-overlay"></div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a> / <span>Contacto</span>
+            </div>
+            <h1 class="reveal">Contactanos</h1>
+            <p class="reveal reveal-delay-1">Estamos acá para ayudarte a organizar tu viaje.</p>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="contact-grid">
+                
+                <div class="contact-info-card reveal-left">
+                    <h2>Nuestras Oficinas</h2>
+                    <p style="color: var(--color-gray-500); margin-bottom: 2rem;">Acercate a nuestra sucursal central o contactanos por cualquiera de nuestros medios. Nuestro equipo de atención te responderá a la brevedad.</p>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4>Dirección</h4>
+                            <p>Av. Gral. Güemes 500<br>Salta Capital, 4400, Argentina</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <h4>Teléfono</h4>
+                            <p>+54 9 387 123 4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>reservas@almarentacar.com.ar</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon"><i class="far fa-clock"></i></div>
+                        <div>
+                            <h4>Horarios de Atención</h4>
+                            <p>Lunes a Sábado: 08:00 a 20:00 hs<br>Domingos y Feriados: Guardias activas</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <a href="#" class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i> Chatear por WhatsApp
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form-card reveal-right">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem;">Dejanos tu mensaje</h3>
+                    <form id="general-contact-form">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Nombre Completo</label>
+                            <input type="text" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Email</label>
+                            <input type="email" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Asunto</label>
+                            <select class="form-input">
+                                <option>Consulta General</option>
+                                <option>Alquiler Corporativo</option>
+                                <option>Modificar Reserva</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label>Mensaje</label>
+                            <textarea class="form-input" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Mensaje</button>
+                    </form>
+                </div>
+                
+            </div>
+            
+            <!-- Google Maps iframe placeholder -->
+            <div style="margin-top: 4rem; border-radius: var(--radius-lg); overflow: hidden; height: 400px; box-shadow: var(--shadow-card);" class="reveal">
+                <!-- Se puede reemplazar con el iframe de Google Maps real -->
+                <div style="width: 100%; height: 100%; background: #e5e3df; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--color-gray-500);">
+                    <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>Espacio para Google Maps</p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div>&copy; <span id="current-year"></span> Alma Rent a Car. Todos los derechos reservados.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('general-contact-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Mensaje enviado. Nos contactaremos a la brevedad.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
