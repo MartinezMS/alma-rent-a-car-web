@@ -30,12 +30,40 @@ class BookingEngine {
       const res = await fetch(`${API_BASE}/public/settings`);
       if (res.ok) this.settings = await res.json();
       const resLoc = await fetch(`${API_BASE}/public/settings/locations`);
-      if (resLoc.ok) this.locationFees = await resLoc.json();
+      if (resLoc.ok) {
+        this.locationFees = await resLoc.json();
+        this.populateLocationDropdowns();
+      }
       const resExtras = await fetch(`${API_BASE}/public/extras`);
       if (resExtras.ok) this.availableExtras = await resExtras.json();
     } catch (e) {
       console.warn('Could not load settings');
     }
+  }
+
+  populateLocationDropdowns() {
+    const pickupSelect = document.getElementById('booking-pickup-location');
+    const dropoffSelect = document.getElementById('booking-dropoff-location');
+    if (!pickupSelect || !dropoffSelect || !this.locationFees) return;
+
+    // Sort: free locations first (Agencia), then alphabetically
+    const sorted = [...this.locationFees].sort((a, b) => {
+      const aFree = (a.pickupFee === 0 && a.dropoffFee === 0) ? 0 : 1;
+      const bFree = (b.pickupFee === 0 && b.dropoffFee === 0) ? 0 : 1;
+      if (aFree !== bFree) return aFree - bFree;
+      return a.name.localeCompare(b.name);
+    });
+
+    const buildOptions = (locations) => {
+      return locations.map(loc => {
+        const fee = Math.max(loc.pickupFee || 0, loc.dropoffFee || 0);
+        const label = fee > 0 ? `${loc.name} (+ARS $${this.formatARS(fee)})` : loc.name;
+        return `<option value="${loc.name}">${label}</option>`;
+      }).join('');
+    };
+
+    pickupSelect.innerHTML = buildOptions(sorted);
+    dropoffSelect.innerHTML = buildOptions(sorted);
   }
 
   bindEvents() {
@@ -484,11 +512,17 @@ class BookingEngine {
     }
 
     // Check location fees
-    if (this.locationFees && this.pickupLocation && this.dropoffLocation && this.pickupLocation !== this.dropoffLocation) {
-      const locFee = this.locationFees.find(f => f.pickupLocation === this.pickupLocation && f.dropoffLocation === this.dropoffLocation);
-      if (locFee) {
-        totalExtras += locFee.fee;
-        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span>Drop-off (${this.pickupLocation} a ${this.dropoffLocation})</span><span>ARS $${this.formatARS(locFee.fee)}</span></div>`;
+    if (this.locationFees && this.pickupLocation) {
+      const pickupLoc = this.locationFees.find(l => l.name === this.pickupLocation);
+      const dropoffLoc = this.locationFees.find(l => l.name === this.dropoffLocation);
+
+      if (pickupLoc && pickupLoc.pickupFee > 0) {
+        totalExtras += pickupLoc.pickupFee;
+        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Retiro en ${this.pickupLocation}</span><span>ARS $${this.formatARS(pickupLoc.pickupFee)}</span></div>`;
+      }
+      if (dropoffLoc && dropoffLoc.dropoffFee > 0) {
+        totalExtras += dropoffLoc.dropoffFee;
+        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Devolución en ${this.dropoffLocation}</span><span>ARS $${this.formatARS(dropoffLoc.dropoffFee)}</span></div>`;
       }
     }
 
