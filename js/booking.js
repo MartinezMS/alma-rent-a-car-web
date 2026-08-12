@@ -4,7 +4,7 @@
    ========================================================= */
 
 // URL base de la API pública
-const API_BASE = 'https://alma-backend-0m1p.onrender.com/api';
+const API_BASE = 'https://alma-rent-a-car-backend.vercel.app/api';
 
 class BookingEngine {
   constructor() {
@@ -305,10 +305,11 @@ class BookingEngine {
       <div class="vehicle-card" data-vehicle-id="${v.id}">
         <div class="vehicle-card-img">
           ${v.category?.name ? `<span class="vehicle-category-badge">${v.category.name}</span>` : ''}
+          <div class="skeleton-loader" id="skel-${v.id}"></div>
           ${v.image 
-            ? `<img src="${v.image}" alt="${v.make || ''} ${v.model || ''}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-               <i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300); display: none;"></i>`
-            : `<i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300);"></i>`
+            ? `<img src="${v.image}" alt="${v.make || ''} ${v.model || ''}" style="max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; position: relative; opacity: 0; transition: opacity 0.3s;" onload="this.style.opacity='1'; document.getElementById('skel-${v.id}').style.display='none';" onerror="this.style.display='none'; document.getElementById('skel-${v.id}').style.display='none'; this.nextElementSibling.style.display='block';">
+               <i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300); display: none; z-index: 2; position: relative;"></i>`
+            : `<i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300); z-index: 2; position: relative;" onload="document.getElementById('skel-${v.id}').style.display='none';"></i>`
           }
         </div>
         <div class="vehicle-card-info">
