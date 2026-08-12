@@ -16,6 +16,9 @@ class BookingEngine {
     this.dates = { start: '', end: '', startTime: '10:00', endTime: '10:00' };
     this.client = { name: '', lastName: '', phone: '', email: '' };
     this.categories = [];
+    this.paymentType = 'online';
+    this.availableExtras = [];
+    this.selectedExtras = {};
 
     this.init();
   }
@@ -28,6 +31,8 @@ class BookingEngine {
       if (res.ok) this.settings = await res.json();
       const resLoc = await fetch(`${API_BASE}/public/settings/locations`);
       if (resLoc.ok) this.locationFees = await resLoc.json();
+      const resExtras = await fetch(`${API_BASE}/public/extras`);
+      if (resExtras.ok) this.availableExtras = await resExtras.json();
     } catch (e) {
       console.warn('Could not load settings');
     }
@@ -272,9 +277,15 @@ class BookingEngine {
     });
   }
 
+  formatARS(amount) {
+    return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+  }
+
   renderVehicles() {
     const container = document.getElementById('vehicles-grid');
     if (!container) return;
+
+    const days = this.calculateDays();
 
     if (this.filteredVehicles.length === 0) {
       container.innerHTML = `
@@ -286,12 +297,19 @@ class BookingEngine {
       return;
     }
 
-    container.innerHTML = this.filteredVehicles.map(v => `
-      <div class="vehicle-card ${this.selectedVehicle?.id === v.id ? 'selected' : ''}" 
-           data-vehicle-id="${v.id}" onclick="bookingEngine.selectVehicle(${v.id})">
+    container.innerHTML = this.filteredVehicles.map(v => {
+      const totalOnline = (v.pricePerDay || 0) * days;
+      const totalDestino = Math.round(totalOnline * 1.20);
+
+      return `
+      <div class="vehicle-card" data-vehicle-id="${v.id}">
         <div class="vehicle-card-img">
           ${v.category?.name ? `<span class="vehicle-category-badge">${v.category.name}</span>` : ''}
-          <i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300);"></i>
+          ${v.image 
+            ? `<img src="${v.image}" alt="${v.make || ''} ${v.model || ''}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+               <i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300); display: none;"></i>`
+            : `<i class="fas fa-car" style="font-size: 4rem; color: var(--color-gray-300);"></i>`
+          }
         </div>
         <div class="vehicle-card-info">
           <h4 class="vehicle-card-name">${v.make || ''} ${v.model || ''}</h4>
@@ -301,26 +319,127 @@ class BookingEngine {
             <span><i class="fas fa-palette"></i> ${v.color || '-'}</span>
             ${v.transmission ? `<span><i class="fas fa-cog"></i> ${v.transmission === 'AUTOMATIC' ? 'Auto' : 'Manual'}</span>` : ''}
           </div>
-          <div class="vehicle-card-footer">
-            <div class="vehicle-price">
-              USD $${v.pricePerDay || 0}<span>/día</span>
-            </div>
-            <button class="btn btn-sm ${this.selectedVehicle?.id === v.id ? 'btn-primary' : 'btn-outline'}">
-              ${this.selectedVehicle?.id === v.id ? 'Seleccionado' : 'Elegir'}
+
+          <div class="vehicle-card-rental-info">
+            <span class="rental-duration"><i class="fas fa-clock"></i> Alquiler por ${days} día${days !== 1 ? 's' : ''}</span>
+            <span class="rental-total">ARS $${this.formatARS(totalOnline)}</span>
+          </div>
+
+          <div class="vehicle-card-pricing">
+            <button class="pay-now-btn" onclick="event.stopPropagation(); bookingEngine.selectVehicle(${v.id}, 'online')">
+              <span class="pay-btn-label">Pagar ahora</span>
+              <span class="pay-btn-badge">20% OFF</span>
+              <span class="pay-btn-price">ARS $${this.formatARS(totalOnline)}</span>
+            </button>
+            <button class="pay-destination-btn" onclick="event.stopPropagation(); bookingEngine.selectVehicle(${v.id}, 'destino')">
+              <span class="pay-btn-label">Pagar en destino</span>
+              <span class="pay-btn-price">ARS $${this.formatARS(totalDestino)}</span>
             </button>
           </div>
+          <p class="price-disclaimer"><i class="fas fa-info-circle"></i> La tarifa "Pagar en destino" puede modificarse al momento del retiro del vehículo.</p>
         </div>
       </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
-  selectVehicle(vehicleId) {
+  selectVehicle(vehicleId, paymentType = 'online') {
     this.selectedVehicle = this.vehicles.find(v => v.id === vehicleId);
-    this.renderVehicles();
+    this.paymentType = paymentType;
+    this.selectedExtras = {};
+    this.renderExtras();
     this.updateBookingSummary();
 
-    // Automatically go to step 3 after a brief visual feedback
-    setTimeout(() => this.goToStep(3), 400);
+    // Go to step 3 after brief visual feedback
+    setTimeout(() => this.goToStep(3), 300);
+  }
+
+  /* ── EXTRAS ── */
+  renderExtras() {
+    const section = document.getElementById('extras-section');
+    const grid = document.getElementById('extras-grid');
+    if (!section || !grid) return;
+
+    if (!this.availableExtras || this.availableExtras.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+    const days = this.calculateDays();
+
+    grid.innerHTML = this.availableExtras.map(ext => {
+      const isSelected = this.selectedExtras[ext.id];
+      const qty = isSelected ? isSelected.quantity : 0;
+      const unitPrice = ext.price || 0;
+      const totalPrice = ext.perDay ? unitPrice * days : unitPrice;
+      const priceLabel = unitPrice > 0 
+        ? `ARS $${this.formatARS(unitPrice)}${ext.perDay ? '/día' : '/reserva'}`
+        : 'Sin cargo';
+
+      return `
+        <div class="extra-card ${isSelected ? 'extra-selected' : ''}" data-extra-id="${ext.id}">
+          <div class="extra-card-header">
+            <span class="extra-icon">${ext.icon || '📦'}</span>
+            <div class="extra-info">
+              <h5 class="extra-name">${ext.name}</h5>
+              ${ext.description ? `<p class="extra-desc">${ext.description}</p>` : ''}
+            </div>
+          </div>
+          <div class="extra-card-footer">
+            <span class="extra-price ${unitPrice === 0 ? 'extra-free' : ''}">${priceLabel}</span>
+            ${isSelected 
+              ? `<div class="extra-controls">
+                  <button type="button" class="extra-qty-btn" onclick="event.stopPropagation(); bookingEngine.updateExtraQuantity(${ext.id}, -1)"><i class="fas fa-minus"></i></button>
+                  <span class="extra-qty">${qty}</span>
+                  <button type="button" class="extra-qty-btn" onclick="event.stopPropagation(); bookingEngine.updateExtraQuantity(${ext.id}, 1)"><i class="fas fa-plus"></i></button>
+                </div>`
+              : `<button type="button" class="btn-add-extra" onclick="event.stopPropagation(); bookingEngine.toggleExtra(${ext.id})"><i class="fas fa-plus"></i> Agregar</button>`
+            }
+          </div>
+          ${isSelected && totalPrice > 0 ? `<div class="extra-subtotal">Subtotal: ARS $${this.formatARS(totalPrice * qty)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  toggleExtra(extraId) {
+    const ext = this.availableExtras.find(e => e.id === extraId);
+    if (!ext) return;
+
+    if (this.selectedExtras[extraId]) {
+      delete this.selectedExtras[extraId];
+    } else {
+      this.selectedExtras[extraId] = { ...ext, quantity: 1 };
+    }
+    this.renderExtras();
+    this.updateBookingSummary();
+  }
+
+  updateExtraQuantity(extraId, delta) {
+    if (!this.selectedExtras[extraId]) return;
+    const newQty = this.selectedExtras[extraId].quantity + delta;
+    if (newQty <= 0) {
+      delete this.selectedExtras[extraId];
+    } else {
+      this.selectedExtras[extraId].quantity = Math.min(newQty, 5);
+    }
+    this.renderExtras();
+    this.updateBookingSummary();
+  }
+
+  getSelectedExtrasTotal() {
+    const days = this.calculateDays();
+    let total = 0;
+    for (const ext of Object.values(this.selectedExtras)) {
+      const unitCost = ext.price || 0;
+      if (ext.perDay) {
+        total += unitCost * ext.quantity * days;
+      } else {
+        total += unitCost * ext.quantity;
+      }
+    }
+    return total;
   }
 
   /* ── STEP 3: CUSTOMER DATA ── */
@@ -330,6 +449,10 @@ class BookingEngine {
 
     const days = this.calculateDays();
     let baseTotal = days * (this.selectedVehicle.pricePerDay || 0);
+    
+    // Apply payment type markup
+    const isDestino = this.paymentType === 'destino';
+    let displayTotal = isDestino ? Math.round(baseTotal * 1.20) : baseTotal;
     
     let extraCostsHTML = '';
     let totalExtras = 0;
@@ -350,11 +473,11 @@ class BookingEngine {
 
         if (isOutOfHours(this.dates.startTime)) {
           totalExtras += fee;
-          extraCostsHTML += `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Retiro Fuera de Hora</span><span>USD $${fee}</span></div>`;
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Retiro Fuera de Hora</span><span>ARS $${this.formatARS(fee)}</span></div>`;
         }
         if (isOutOfHours(this.dates.endTime)) {
           totalExtras += fee;
-          extraCostsHTML += `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Devolución Fuera de Hora</span><span>USD $${fee}</span></div>`;
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Devolución Fuera de Hora</span><span>ARS $${this.formatARS(fee)}</span></div>`;
         }
       }
     }
@@ -364,11 +487,27 @@ class BookingEngine {
       const locFee = this.locationFees.find(f => f.pickupLocation === this.pickupLocation && f.dropoffLocation === this.dropoffLocation);
       if (locFee) {
         totalExtras += locFee.fee;
-        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span>Drop-off (${this.pickupLocation} a ${this.dropoffLocation})</span><span>USD $${locFee.fee}</span></div>`;
+        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span>Drop-off (${this.pickupLocation} a ${this.dropoffLocation})</span><span>ARS $${this.formatARS(locFee.fee)}</span></div>`;
       }
     }
 
-    const total = baseTotal + totalExtras;
+    // Add selected extras to summary
+    const extrasTotal = this.getSelectedExtrasTotal();
+    if (extrasTotal > 0 || Object.keys(this.selectedExtras).length > 0) {
+      for (const ext of Object.values(this.selectedExtras)) {
+        const unitCost = ext.price || 0;
+        const extTotal = ext.perDay ? unitCost * ext.quantity * days : unitCost * ext.quantity;
+        const label = ext.quantity > 1 ? `${ext.name} x${ext.quantity}` : ext.name;
+        if (extTotal > 0) {
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#7c3aed; font-size:0.85rem;"><span><i class="fas fa-puzzle-piece"></i> ${label}${ext.perDay ? ` (${days}d)` : ''}</span><span>ARS $${this.formatARS(extTotal)}</span></div>`;
+        } else {
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#7c3aed; font-size:0.85rem;"><span><i class="fas fa-puzzle-piece"></i> ${label}</span><span style="color:#16a34a;">Sin cargo</span></div>`;
+        }
+      }
+      totalExtras += extrasTotal;
+    }
+
+    const total = displayTotal + totalExtras;
 
     const formatDate = (dateStr, timeStr) => {
       if (!dateStr) return '-';
@@ -376,11 +515,19 @@ class BookingEngine {
       return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) + ' ' + (timeStr || '');
     };
 
+    const paymentLabel = isDestino 
+      ? '<span style="color:#d97706; font-weight:600;"><i class="fas fa-store"></i> Pago en destino (+20%)</span>'
+      : '<span style="color:#16a34a; font-weight:600;"><i class="fas fa-bolt"></i> Pago online (20% OFF)</span>';
+
     summary.innerHTML = `
       <h4><i class="fas fa-receipt" style="color: var(--color-primary);"></i> Resumen de tu Reserva</h4>
       <div class="booking-summary-row">
         <span>Vehículo</span>
         <strong>${this.selectedVehicle.make} ${this.selectedVehicle.model}</strong>
+      </div>
+      <div class="booking-summary-row">
+        <span>Modalidad de pago</span>
+        ${paymentLabel}
       </div>
       <div class="booking-summary-row">
         <span>Retiro</span>
@@ -392,13 +539,15 @@ class BookingEngine {
       </div>
       <div class="booking-summary-row">
         <span>Duración</span>
-        <span>${days} día${days !== 1 ? 's' : ''} (USD $${this.selectedVehicle.pricePerDay}/día)</span>
+        <span>${days} día${days !== 1 ? 's' : ''} (ARS $${this.formatARS(this.selectedVehicle.pricePerDay)}/día)</span>
       </div>
+      ${isDestino ? `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Recargo pago en destino (20%)</span><span>ARS $${this.formatARS(displayTotal - baseTotal)}</span></div>` : ''}
       ${extraCostsHTML}
       <div class="booking-summary-row total">
         <span>Total Estimado</span>
-        <span>USD $${total.toFixed(2)}</span>
+        <span>ARS $${this.formatARS(total)}</span>
       </div>
+      ${isDestino ? '<p style="font-size:0.75rem; color:#94a3b8; margin-top:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> La tarifa "Pagar en destino" puede modificarse al momento del retiro del vehículo.</p>' : ''}
     `;
   }
 
@@ -484,7 +633,14 @@ class BookingEngine {
           customerLastName: this.client.lastName,
           customerPhone: this.client.phone,
           customerEmail: this.client.email,
-          paymentMethod: paymentMethod
+          paymentMethod: paymentMethod,
+          extras: Object.values(this.selectedExtras).map(ext => ({
+            id: ext.id,
+            name: ext.name,
+            price: ext.price,
+            perDay: ext.perDay,
+            quantity: ext.quantity
+          }))
         })
       });
 
@@ -543,6 +699,8 @@ class BookingEngine {
   reset() {
     this.currentStep = 1;
     this.selectedVehicle = null;
+    this.paymentType = 'online';
+    this.selectedExtras = {};
     this.dates = { start: '', end: '', startTime: '10:00', endTime: '10:00' };
     this.client = { name: '', lastName: '', phone: '', email: '' };
     const termsCheckbox = document.getElementById('terms-checkbox');
