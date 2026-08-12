@@ -56,9 +56,7 @@ class BookingEngine {
 
     const buildOptions = (locations) => {
       return locations.map(loc => {
-        const fee = Math.max(loc.pickupFee || 0, loc.dropoffFee || 0);
-        const label = fee > 0 ? `${loc.name} (+ARS $${this.formatARS(fee)})` : loc.name;
-        return `<option value="${loc.name}">${label}</option>`;
+        return `<option value="${loc.name}">${loc.name}</option>`;
       }).join('');
     };
 
