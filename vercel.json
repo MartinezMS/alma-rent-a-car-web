@@ -1,4 +1,16 @@
 {
   "name": "alma-rentacar-web",
-  "framework": null
+  "framework": null,
+  "redirects": [
+    { "source": "/condiciones-para-alquilar-autos", "destination": "/terminos.html", "permanent": true },
+    { "source": "/terminos", "destination": "/terminos.html", "permanent": true },
+    { "source": "/contacto", "destination": "/contacto.html", "permanent": true },
+    { "source": "/servicios-alquiler-de-autos", "destination": "/", "permanent": true },
+    { "source": "/flota-de-autos-en-alquiler", "destination": "/#reservas", "permanent": true },
+    { "source": "/envia-tu-reserva", "destination": "/#reservas", "permanent": true },
+    { "source": "/elegi-tu-auto", "destination": "/#reservas", "permanent": true },
+    { "source": "/reserva-paga", "destination": "/#reservas", "permanent": true },
+    { "source": "/cancelar-reserva", "destination": "/#reservas", "permanent": true },
+    { "source": "/obtener-reserva-fallido", "destination": "/#reservas", "permanent": true }
+  ]
 }

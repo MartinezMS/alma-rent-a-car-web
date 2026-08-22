@@ -293,6 +293,17 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-2px);
 }
 
+.btn-google {
+  border-color: #4285F4;
+  color: #4285F4;
+}
+
+.btn-google:hover {
+  background: #4285F4;
+  border-color: #4285F4;
+  color: var(--color-white);
+}
+
 .btn-dark {
   background: var(--color-black);
   color: var(--color-white);
@@ -371,7 +382,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: filter var(--transition-base);
 }
 
-.header--transparent .logo-img {
+.header:not(.header--scrolled) .logo-img {
   filter: brightness(0) invert(1);
 }
 
@@ -474,22 +485,28 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   color: var(--color-white);
   padding: var(--space-2xl);
+  padding-bottom: calc(var(--space-2xl) + 80px);
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 102, 0, 0.15);
-  border: 1px solid rgba(255, 102, 0, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   padding: 8px 20px;
   border-radius: var(--radius-full);
   font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-primary-light);
+  font-weight: 600;
+  color: var(--color-black);
   margin-bottom: var(--space-lg);
   backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
   animation: fadeInDown 0.8s ease forwards;
+}
+
+.hero-badge i {
+  color: var(--color-primary);
 }
 
 .hero-content h1 {
@@ -550,7 +567,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── BOOKING WIDGET (Estilo Hertz) ── */
 .booking-section {
-  margin-top: -60px;
+  margin-top: -40px;
   position: relative;
   z-index: 10;
   padding: 0 var(--space-md);
@@ -1539,66 +1556,141 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-.corporate-content {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-.corporate-content h2 {
+.corporate-section .section-header h2 {
   color: var(--color-white);
-  margin-bottom: var(--space-lg);
 }
 
-.corporate-content > p {
+.corporate-section .section-header p {
   color: var(--color-gray-300);
-  margin-bottom: var(--space-2xl);
+}
+
+.corporate-section .benefit-card h3 {
+  color: var(--color-white);
+}
+
+.corporate-section .benefit-card p {
+  color: var(--color-gray-300);
+}
+
+.corporate-section .benefit-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.corporate-section .benefit-icon {
+  background: rgba(255, 102, 0, 0.15);
+}
+
+/* ── CARRUSEL ── */
+.carousel {
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: var(--space-xl);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: var(--space-sm) 2px;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 80%;
+  max-width: 300px;
+}
+
+@media (min-width: 640px) {
+  .carousel-item {
+    width: calc(50% - var(--space-xl) / 2);
+    max-width: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-item {
+    width: calc((100% - var(--space-xl) * 2) / 3);
+  }
+}
+
+.carousel-viewport {
+  position: relative;
+}
+
+.carousel-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(6px);
+  color: var(--color-white);
   font-size: 1.1rem;
-}
-
-.corporate-features {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: center;
-  margin-bottom: var(--space-2xl);
-}
-
-.corporate-feature {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--color-gray-200);
-  font-size: 1rem;
-}
-
-.corporate-feature i {
-  color: var(--color-primary);
-}
-
-.corporate-badges {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-md);
-  flex-wrap: wrap;
-}
-
-.corporate-badge {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  font-size: 0.9rem;
-  backdrop-filter: blur(10px);
+  cursor: pointer;
+  z-index: 2;
   transition: all var(--transition-base);
 }
 
-.corporate-badge:hover {
-  background: rgba(255, 102, 0, 0.15);
+.carousel-arrow--prev {
+  left: -8px;
+}
+
+.carousel-arrow--next {
+  right: -8px;
+}
+
+@media (min-width: 640px) {
+  .carousel-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: var(--color-primary);
   border-color: var(--color-primary);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.carousel-dot.active {
+  width: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
 }
 
 /* ── TESTIMONIALS ── */
@@ -2195,7 +2287,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: right 0.4s cubic-bezier(0.65, 0, 0.35, 1);
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
     padding: var(--space-2xl);
-    z-index: 100;
+    z-index: 102;
   }
 
   .nav-menu.active {
@@ -2213,7 +2305,10 @@ h1, h2, h3, h4, h5, h6 {
 
   .nav-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 99;
     opacity: 0;
@@ -2228,6 +2323,22 @@ h1, h2, h3, h4, h5, h6 {
 
   .hamburger {
     display: flex;
+    z-index: 103;
+  }
+
+  /* Con el menu abierto: la X debe verse sobre el panel blanco */
+  body.menu-open .hamburger {
+    color: var(--color-black);
+  }
+
+  /* El logo no debe superponerse al panel abierto */
+  body.menu-open .logo {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .logo-img {
+    height: 42px;
   }
 
   .hero-content h1 {
@@ -2240,6 +2351,10 @@ h1, h2, h3, h4, h5, h6 {
 
   .hero-stat-value {
     font-size: 1.5rem;
+  }
+
+  .booking-section {
+    margin-top: var(--space-lg);
   }
 
   .benefits-grid {
@@ -2325,8 +2440,15 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .hero-stats {
-    flex-direction: column;
-    gap: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .hero-stat-value {
+    font-size: 1.15rem;
+  }
+
+  .hero-stat-label {
+    font-size: 0.7rem;
   }
 
   .hero-buttons {

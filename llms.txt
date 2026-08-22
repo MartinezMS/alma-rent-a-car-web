@@ -1,0 +1,32 @@
+# Alma Rent a Car
+
+> Alquiler de autos en Jujuy, Argentina, con motor de reservas online.
+> Retiro en el Aeropuerto de Jujuy, hoteles de San Salvador, la Terminal
+> de Ómnibus o la oficina central. También opera con retiro y devolución
+> en puntos distintos entre Jujuy, Salta, Tucumán, Catamarca y La Rioja.
+
+Empresa local (no una central de reservas) fundada hace más de 10 años,
+con base en San Salvador de Jujuy. Calificación de 4,7 sobre 5 en Google
+con 533 reseñas. Flota organizada en cuatro categorías: Compactos,
+Medianos, SUV y Pick Up (esta última con disponibilidad limitada).
+Atiende turismo y también movilidad corporativa para empresas y minería
+en la región NOA (facturación tipo A, cuentas corrientes, flotas para
+ejecutivos).
+
+Contacto: +54 9 388 403 0132 · info@almarentacar.com · Julio A. Roca
+N° 41 esq. Av. Alte. Brown, San Salvador de Jujuy, Argentina.
+
+## Páginas principales
+
+- [Inicio y motor de reservas](https://almarentacar.com/): búsqueda de
+  vehículos por fecha, punto de retiro y devolución, con pago online.
+- [Nosotros](https://almarentacar.com/nosotros.html): historia y equipo.
+- [Preguntas frecuentes](https://almarentacar.com/faq.html): requisitos,
+  qué incluye la tarifa, cruce a países limítrofes, combustible, horarios.
+- [Contacto](https://almarentacar.com/contacto.html): formulario, mapa y
+  WhatsApp.
+
+## Legal
+
+- [Términos y condiciones](https://almarentacar.com/terminos.html)
+- [Política de privacidad](https://almarentacar.com/privacidad.html)

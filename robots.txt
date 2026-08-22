@@ -1,4 +1,32 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://almarentacar.com.ar/sitemap.xml
+# Rastreadores de IA: permitidos de forma explicita para que Alma Rent a Car
+# pueda ser citada como fuente en respuestas generadas (ChatGPT, Claude,
+# Perplexity, Gemini). Cambiar a "Disallow: /" si alguna vez se decide lo
+# contrario.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://almarentacar.com/sitemap.xml

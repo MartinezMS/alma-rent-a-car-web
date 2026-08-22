@@ -43,6 +43,7 @@ function initMobileMenu() {
   const toggleMenu = () => {
     const isOpen = navMenu.classList.toggle('active');
     if (navOverlay) navOverlay.classList.toggle('active');
+    document.body.classList.toggle('menu-open', isOpen);
 
     const icon = hamburger.querySelector('i');
     if (isOpen) {
@@ -157,3 +158,110 @@ function setActiveNavLink() {
   });
 }
 document.addEventListener('DOMContentLoaded', setActiveNavLink);
+
+/* ── CARRUSEL (scroll-snap + flechas + puntos + autoplay) ── */
+function initCarousels() {
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    const track = carousel.querySelector('.carousel-track');
+    const prevBtn = carousel.querySelector('.carousel-arrow--prev');
+    const nextBtn = carousel.querySelector('.carousel-arrow--next');
+    const dotsWrap = carousel.querySelector('.carousel-dots');
+    const items = track ? [...track.querySelectorAll('.carousel-item')] : [];
+    if (!track || !items.length) return;
+
+    const currentIndex = () => {
+      let closest = 0;
+      let closestDist = Infinity;
+      items.forEach((item, i) => {
+        const dist = Math.abs(item.offsetLeft - track.scrollLeft);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      });
+      return closest;
+    };
+
+    const goTo = (index) => {
+      const clamped = Math.max(0, Math.min(items.length - 1, index));
+      track.scrollTo({ left: items[clamped].offsetLeft, behavior: 'smooth' });
+    };
+
+    // Puntos indicadores
+    const dots = [];
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      items.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot';
+        dot.setAttribute('aria-label', `Ir al elemento ${i + 1}`);
+        dot.addEventListener('click', () => {
+          goTo(i);
+          pauseAutoplay();
+          scheduleResume();
+        });
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      });
+    }
+
+    const updateUI = () => {
+      const maxScroll = track.scrollWidth - track.clientWidth - 2;
+      if (prevBtn) prevBtn.disabled = track.scrollLeft <= 2;
+      if (nextBtn) nextBtn.disabled = track.scrollLeft >= maxScroll;
+      const idx = currentIndex();
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    };
+
+    prevBtn?.addEventListener('click', () => {
+      goTo(currentIndex() - 1);
+      pauseAutoplay();
+      scheduleResume();
+    });
+    nextBtn?.addEventListener('click', () => {
+      goTo(currentIndex() + 1);
+      pauseAutoplay();
+      scheduleResume();
+    });
+    track.addEventListener('scroll', updateUI, { passive: true });
+    window.addEventListener('resize', updateUI);
+
+    // Autoplay: se pausa al interactuar y retoma tras un momento de inactividad
+    const intervalMs = parseInt(carousel.dataset.autoplay, 10);
+    let autoplayTimer = null;
+    let resumeTimer = null;
+
+    const stopAutoplay = () => {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    };
+    const startAutoplay = () => {
+      if (!intervalMs || items.length < 2) return;
+      stopAutoplay();
+      autoplayTimer = setInterval(() => {
+        const next = currentIndex() + 1 >= items.length ? 0 : currentIndex() + 1;
+        goTo(next);
+      }, intervalMs);
+    };
+    const pauseAutoplay = () => {
+      stopAutoplay();
+      if (resumeTimer) clearTimeout(resumeTimer);
+    };
+    const scheduleResume = () => {
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(startAutoplay, 5000);
+    };
+
+    carousel.addEventListener('mouseenter', pauseAutoplay);
+    carousel.addEventListener('mouseleave', scheduleResume);
+    carousel.addEventListener('touchstart', () => {
+      pauseAutoplay();
+      scheduleResume();
+    }, { passive: true });
+
+    updateUI();
+    startAutoplay();
+  });
+}
+document.addEventListener('DOMContentLoaded', initCarousels);
