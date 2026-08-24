@@ -124,7 +124,7 @@ class BookingEngine {
           .then(html => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-            const main = doc.querySelector('main') || doc.querySelector('.container') || doc.querySelector('section') || doc.body;
+            const main = doc.querySelector('.legal-content') || doc.querySelector('main') || doc.querySelector('.container') || doc.querySelector('section') || doc.body;
             contentDiv.innerHTML = main.innerHTML;
           })
           .catch(() => {
