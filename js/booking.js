@@ -329,7 +329,8 @@ class BookingEngine {
 
     container.innerHTML = this.filteredVehicles.map(v => {
       const totalOnline = (v.pricePerDay || 0) * days;
-      const totalDestino = Math.round(totalOnline * 1.20);
+      const originalTotal = totalOnline / 0.8;
+      const totalDestino = Math.round(originalTotal * 1.10);
 
       return `
       <div class="vehicle-card" data-vehicle-id="${v.id}">
@@ -346,17 +347,20 @@ class BookingEngine {
           <h4 class="vehicle-card-name">${v.make || ''} ${v.model || ''}</h4>
           ${v.description ? `<p style="font-size: 0.8rem; color: #666; margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">${v.description.replace(/\n/g, '<br>')}</p>` : ''}
           <div class="vehicle-card-specs">
-            <span><i class="fas fa-calendar-alt"></i> ${v.year || '-'}</span>
             <span><i class="fas fa-palette"></i> ${v.color || '-'}</span>
             ${v.transmission ? `<span><i class="fas fa-cog"></i> ${v.transmission === 'AUTOMATIC' ? 'Auto' : 'Manual'}</span>` : ''}
           </div>
 
-          <div class="vehicle-card-rental-info">
-            <span class="rental-duration"><i class="fas fa-clock"></i> Alquiler por ${days} día${days !== 1 ? 's' : ''}</span>
-            <span class="rental-total">ARS $${this.formatARS(totalOnline)}</span>
+          <div style="margin-top: 15px; text-align: center; font-weight: 600; color: #334155; font-size: 0.95rem;">
+             <i class="fas fa-clock" style="color: var(--color-primary);"></i> Alquiler por ${days} día${days !== 1 ? 's' : ''}
           </div>
 
-          <div class="vehicle-card-pricing">
+          <div class="vehicle-card-rental-info" style="margin-top: 10px; background-color: #2a3547; justify-content: space-between;">
+            <span class="rental-duration" style="color: #94a3b8; font-weight: 500;">Precio de lista</span>
+            <span class="rental-total" style="text-decoration: line-through; color: #cbd5e1; font-size: 1.1rem;">ARS $${this.formatARS(originalTotal)}</span>
+          </div>
+
+          <div class="vehicle-card-pricing" style="margin-top: 8px;">
             <button class="pay-now-btn" onclick="event.stopPropagation(); bookingEngine.selectVehicle(${v.id}, 'online')">
               <span class="pay-btn-label">Pagar ahora</span>
               <span class="pay-btn-badge">20% OFF</span>
