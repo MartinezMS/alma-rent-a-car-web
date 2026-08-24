@@ -579,6 +579,11 @@ class BookingEngine {
       ? '<span style="color:#d97706; font-weight:600;"><i class="fas fa-store"></i> Pago en destino (+20%)</span>'
       : '<span style="color:#16a34a; font-weight:600;"><i class="fas fa-bolt"></i> Pago online (20% OFF)</span>';
 
+    const paymentContainer = document.getElementById('payment-method-container');
+    if (paymentContainer) {
+      paymentContainer.style.display = isDestino ? 'none' : 'flex';
+    }
+
     summary.innerHTML = `
       <h4><i class="fas fa-receipt" style="color: var(--color-primary);"></i> Resumen de tu Reserva</h4>
       <div class="booking-summary-row">
@@ -668,8 +673,11 @@ class BookingEngine {
     }
 
     // Get selected payment method
-    const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
-    const paymentMethod = paymentMethodEl ? paymentMethodEl.value : 'mercadopago';
+    let paymentMethod = this.selectedPaymentType === 'destino' ? 'destino' : 'mercadopago';
+    if (this.selectedPaymentType !== 'destino') {
+      const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
+      if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
+    }
 
     // Submit
     const submitBtn = document.getElementById('booking-submit-btn');
