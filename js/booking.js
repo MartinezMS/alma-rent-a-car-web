@@ -518,13 +518,32 @@ class BookingEngine {
       const pickupLoc = this.locationFees.find(l => l.name === this.pickupLocation);
       const dropoffLoc = this.locationFees.find(l => l.name === this.dropoffLocation);
 
-      if (pickupLoc && pickupLoc.pickupFee > 0) {
-        totalExtras += pickupLoc.pickupFee;
-        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Retiro en ${this.pickupLocation}</span><span>ARS $${this.formatARS(pickupLoc.pickupFee)}</span></div>`;
-      }
-      if (dropoffLoc && dropoffLoc.dropoffFee > 0) {
-        totalExtras += dropoffLoc.dropoffFee;
-        extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Devolución en ${this.dropoffLocation}</span><span>ARS $${this.formatARS(dropoffLoc.dropoffFee)}</span></div>`;
+      if (this.pickupLocation === this.dropoffLocation && pickupLoc) {
+        if (typeof pickupLoc.roundtripFee === 'number') {
+          if (pickupLoc.roundtripFee > 0) {
+            totalExtras += pickupLoc.roundtripFee;
+            extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Retiro y Devolución en ${this.pickupLocation}</span><span>ARS $${this.formatARS(pickupLoc.roundtripFee)}</span></div>`;
+          }
+        } else {
+          // Fallback if roundtripFee is not provided
+          if (pickupLoc.pickupFee > 0) {
+            totalExtras += pickupLoc.pickupFee;
+            extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Retiro en ${this.pickupLocation}</span><span>ARS $${this.formatARS(pickupLoc.pickupFee)}</span></div>`;
+          }
+          if (dropoffLoc && dropoffLoc.dropoffFee > 0) {
+            totalExtras += dropoffLoc.dropoffFee;
+            extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Devolución en ${this.dropoffLocation}</span><span>ARS $${this.formatARS(dropoffLoc.dropoffFee)}</span></div>`;
+          }
+        }
+      } else {
+        if (pickupLoc && pickupLoc.pickupFee > 0) {
+          totalExtras += pickupLoc.pickupFee;
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Retiro en ${this.pickupLocation}</span><span>ARS $${this.formatARS(pickupLoc.pickupFee)}</span></div>`;
+        }
+        if (dropoffLoc && dropoffLoc.dropoffFee > 0) {
+          totalExtras += dropoffLoc.dropoffFee;
+          extraCostsHTML += `<div class="booking-summary-row" style="color:#2563eb; font-size:0.85rem;"><span><i class="fas fa-map-marker-alt"></i> Devolución en ${this.dropoffLocation}</span><span>ARS $${this.formatARS(dropoffLoc.dropoffFee)}</span></div>`;
+        }
       }
     }
 
