@@ -673,8 +673,8 @@ class BookingEngine {
     }
 
     // Get selected payment method
-    let paymentMethod = this.selectedPaymentType === 'destino' ? 'destino' : 'mercadopago';
-    if (this.selectedPaymentType !== 'destino') {
+    let paymentMethod = this.paymentType === 'destino' ? 'destino' : 'mercadopago';
+    if (this.paymentType !== 'destino') {
       const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
       if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
     }
