@@ -348,7 +348,7 @@ class BookingEngine {
           ${v.description ? `<p style="font-size: 0.8rem; color: #666; margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">${v.description.replace(/\n/g, '<br>')}</p>` : ''}
           <div class="vehicle-card-specs">
             <span><i class="fas fa-palette"></i> ${v.color || '-'}</span>
-            ${v.transmission ? `<span><i class="fas fa-cog"></i> ${v.transmission === 'AUTOMATIC' ? 'Auto' : 'Manual'}</span>` : ''}
+            ${v.transmission ? `<span><i class="fas fa-cog"></i> ${v.transmission.toLowerCase().includes('auto') ? 'Auto' : 'Manual'}</span>` : ''}
           </div>
 
           <div style="margin-top: 15px; text-align: center; font-weight: 600; color: #334155; font-size: 0.95rem;">
