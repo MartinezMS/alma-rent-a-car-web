@@ -682,7 +682,7 @@ class BookingEngine {
     // Submit
     const submitBtn = document.getElementById('booking-submit-btn');
     const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="spinner"></span> Enviando...';
+    submitBtn.innerHTML = '<span class="spinner"></span> Confirmando y enviando email...';
     submitBtn.disabled = true;
 
     try {
