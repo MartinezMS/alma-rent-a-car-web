@@ -708,7 +708,7 @@ class BookingEngine {
       event: 'begin_checkout',
       vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
       payment_method: paymentMethod,
-      total_price: this.calculateTotal()
+      total_price: 0
     });
 
     try {
