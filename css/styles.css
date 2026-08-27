@@ -898,6 +898,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   gap: 8px;
   margin-top: var(--space-md);
+  padding: 0 15px;
 }
 
 .pay-now-btn,
