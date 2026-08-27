@@ -2460,6 +2460,120 @@ h1, h2, h3, h4, h5, h6 {
   .hero-buttons .btn {
     width: 100%;
   }
+
+  /* ── BOOKING FLOW MOBILE FIXES ── */
+
+  /* Extras grid: single column on small screens */
+  .extras-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Extras card: prevent text and button overflow */
+  .extra-card {
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .extra-card-header {
+    gap: 10px;
+  }
+
+  .extra-info {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .extra-name {
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .extra-desc {
+    font-size: 0.75rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .extra-card-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn-add-extra {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Payment method: stack vertically on mobile */
+  #payment-method-container .form-group > div {
+    flex-direction: column !important;
+  }
+
+  #payment-method-container label {
+    flex: unset !important;
+    width: 100% !important;
+  }
+
+  /* Booking summary: proper spacing between label and value */
+  .booking-summary {
+    padding: 16px;
+  }
+
+  .booking-summary-row {
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 0;
+  }
+
+  .booking-summary-row span:first-child {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  .booking-summary-row strong,
+  .booking-summary-row span:last-child {
+    text-align: left;
+  }
+
+  .booking-summary-row.total {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  /* Navigation buttons: stack vertically with full width */
+  .booking-nav {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .booking-nav .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Vehicle card pricing buttons */
+  .vehicle-card-pricing {
+    padding: 0 10px;
+  }
+
+  .pay-now-btn,
+  .pay-destination-btn {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .pay-btn-label {
+    font-size: 0.8rem;
+  }
+
+  .pay-btn-price {
+    font-size: 0.85rem;
+  }
 }
 
 /* ── PRINT ── */
