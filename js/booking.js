@@ -351,13 +351,13 @@ class BookingEngine {
             ${v.transmission ? `<span><i class="fas fa-cog"></i> ${v.transmission.toLowerCase().includes('auto') ? 'Auto' : 'Manual'}</span>` : ''}
           </div>
 
-          <div style="margin-top: 15px; text-align: center; font-weight: 600; color: #334155; font-size: 0.95rem;">
-             <i class="fas fa-clock" style="color: var(--color-primary);"></i> Alquiler por ${days} día${days !== 1 ? 's' : ''}
+          <div style="margin-top: 15px; text-align: center; font-weight: 600; color: #000; font-size: 1.1rem;">
+             Alquiler por ${days} día${days !== 1 ? 's' : ''}
           </div>
-
-          <div class="vehicle-card-rental-info" style="margin-top: 10px; background-color: #2a3547; justify-content: space-between;">
-            <span class="rental-duration" style="color: #94a3b8; font-weight: 500;">Precio de lista</span>
-            <span class="rental-total" style="text-decoration: line-through; color: #cbd5e1; font-size: 1.1rem;">ARS $${this.formatARS(originalTotal)}</span>
+          
+          <div style="text-align: center; margin-top: 5px; font-weight: 700; color: #000; font-size: 1.8rem; letter-spacing: -0.5px;">
+               <span style="font-size: 1.1rem; font-weight: 400; margin-right: 2px;">ARS</span> $${this.formatARS(originalTotal)}
+            </div>
           </div>
 
           <div class="vehicle-card-pricing" style="margin-top: 8px;">
