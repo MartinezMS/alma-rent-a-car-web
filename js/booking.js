@@ -251,6 +251,15 @@ class BookingEngine {
 
     try {
       await this.fetchVehicles();
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'search_vehicles',
+        pickup_location: this.pickupLocation,
+        dropoff_location: this.dropoffLocation,
+        start_date: this.dates.start,
+        end_date: this.dates.end,
+        vehicles_found: this.vehicles.length
+      });
       this.goToStep(2);
     } catch (error) {
       console.error('Error fetching vehicles:', error);
@@ -384,6 +393,15 @@ class BookingEngine {
     this.selectedExtras = {};
     this.renderExtras();
     this.updateBookingSummary();
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'select_vehicle',
+      vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+      vehicle_category: this.selectedVehicle.category || '',
+      payment_type: paymentType,
+      price: this.selectedVehicle.pricePerDay
+    });
 
     // Go to step 3 after brief visual feedback
     setTimeout(() => this.goToStep(3), 300);
@@ -685,6 +703,14 @@ class BookingEngine {
     submitBtn.innerHTML = '<span class="spinner"></span> Confirmando y enviando email...';
     submitBtn.disabled = true;
 
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'begin_checkout',
+      vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+      payment_method: paymentMethod,
+      total_price: this.calculateTotal()
+    });
+
     try {
       const response = await fetch(`${API_BASE}/public/bookings`, {
         method: 'POST',
@@ -733,6 +759,16 @@ class BookingEngine {
     if (successBookingId && booking?.id) {
       successBookingId.textContent = `#${String(booking.id).padStart(5, '0')}`;
     }
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'purchase',
+      transaction_id: booking?.id ? `WEB-${booking.id}` : '',
+      value: booking?.totalPrice || 0,
+      currency: 'ARS',
+      vehicle_name: `${this.selectedVehicle?.make || ''} ${this.selectedVehicle?.model || ''}`,
+      payment_method: this.selectedPaymentType || 'online'
+    });
 
     const paymentUrl = booking?.paymentUrl || booking?.mp_init_point || booking?.mp_sandbox_init_point;
     
