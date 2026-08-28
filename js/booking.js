@@ -761,14 +761,6 @@ class BookingEngine {
     }
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'purchase',
-      transaction_id: booking?.id ? `WEB-${booking.id}` : '',
-      value: booking?.totalPrice || 0,
-      currency: 'ARS',
-      vehicle_name: `${this.selectedVehicle?.make || ''} ${this.selectedVehicle?.model || ''}`,
-      payment_method: this.selectedPaymentType || 'online'
-    });
 
     const paymentUrl = booking?.paymentUrl || booking?.mp_init_point || booking?.mp_sandbox_init_point;
     
@@ -893,5 +885,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (endDate) {
     endDate.setAttribute('min', today);
+  }
+
+  // Handle Mercado Pago return URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const collectionStatus = urlParams.get('collection_status');
+  const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+  
+  if ((collectionStatus === 'approved' || urlParams.get('status') === 'approved') && bookingEngine) {
+    // Show step 4 directly
+    bookingEngine.goToStep(4);
+    
+    // Fire GA4 purchase event
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'purchase',
+      ecommerce: {
+        transaction_id: paymentId,
+        value: 0, // Cannot retrieve exact value from URL easily, ideally fetched from backend
+        currency: 'ARS',
+        payment_method: 'mercadopago',
+        items: [{
+          item_name: 'Reserva Alquiler Auto',
+          price: 0,
+          quantity: 1
+        }]
+      }
+    });
+
+    const successBookingId = document.getElementById('success-booking-id');
+    if (successBookingId && urlParams.get('external_reference')) {
+      successBookingId.textContent = `#${String(urlParams.get('external_reference')).padStart(5, '0')}`;
+    }
+    
+    // Clear URL to prevent firing again on refresh
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
 });
