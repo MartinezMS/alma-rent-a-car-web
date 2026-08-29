@@ -396,11 +396,21 @@ class BookingEngine {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: 'select_vehicle',
-      vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
-      vehicle_category: this.selectedVehicle.category || '',
-      payment_type: paymentType,
-      price: this.selectedVehicle.pricePerDay
+      event: 'select_item',
+      item_list_id: 'resultados_busqueda',
+      item_list_name: 'Resultados de búsqueda',
+      currency: 'ARS',
+      value: this.selectedVehicle.pricePerDay,
+      items: [
+        {
+          item_id: this.selectedVehicle.id.toString(),
+          item_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+          item_category: this.selectedVehicle.category ? this.selectedVehicle.category.name : '',
+          price: this.selectedVehicle.pricePerDay,
+          quantity: 1
+        }
+      ],
+      payment_type: paymentType
     });
 
     // Go to step 3 after brief visual feedback
@@ -715,12 +725,32 @@ class BookingEngine {
     submitBtn.innerHTML = '<span class="spinner"></span> Confirmando y enviando email...';
     submitBtn.disabled = true;
 
+    const totalPrice = this.calculateTotal();
+
+    // Save booking data to localStorage for the 'purchase' event on the success page
+    localStorage.setItem('alma_last_booking', JSON.stringify({
+      vehicle_id: this.selectedVehicle.id,
+      vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+      vehicle_category: this.selectedVehicle.category ? this.selectedVehicle.category.name : '',
+      total_price: totalPrice,
+      payment_method: paymentMethod
+    }));
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'begin_checkout',
-      vehicle_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+      currency: 'ARS',
+      value: totalPrice,
       payment_method: paymentMethod,
-      total_price: 0
+      items: [
+        {
+          item_id: this.selectedVehicle.id.toString(),
+          item_name: `${this.selectedVehicle.make} ${this.selectedVehicle.model}`,
+          item_category: this.selectedVehicle.category ? this.selectedVehicle.category.name : '',
+          price: totalPrice,
+          quantity: 1
+        }
+      ]
     });
 
     try {
@@ -909,22 +939,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show step 4 directly
     bookingEngine.goToStep(4);
     
+    // Retrieve booking data from localStorage
+    let lastBooking = null;
+    try {
+      const stored = localStorage.getItem('alma_last_booking');
+      if (stored) {
+        lastBooking = JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error('Error reading booking from localStorage', e);
+    }
+
     // Fire GA4 purchase event
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    const purchaseData = {
       event: 'purchase',
-      ecommerce: {
-        transaction_id: paymentId,
-        value: 0, // Cannot retrieve exact value from URL easily, ideally fetched from backend
-        currency: 'ARS',
-        payment_method: 'mercadopago',
-        items: [{
-          item_name: 'Reserva Alquiler Auto',
-          price: 0,
-          quantity: 1
-        }]
-      }
-    });
+      transaction_id: paymentId || 'WEB-UNKNOWN',
+      currency: 'ARS',
+      value: lastBooking ? lastBooking.total_price : 0,
+      payment_method: lastBooking ? lastBooking.payment_method : 'online',
+      items: []
+    };
+
+    if (lastBooking) {
+      purchaseData.items.push({
+        item_id: lastBooking.vehicle_id.toString(),
+        item_name: lastBooking.vehicle_name,
+        item_category: lastBooking.vehicle_category,
+        price: lastBooking.total_price,
+        quantity: 1
+      });
+    } else {
+      purchaseData.items.push({
+        item_id: 'unknown',
+        item_name: 'Reserva Alquiler Auto',
+        item_category: '',
+        price: 0,
+        quantity: 1
+      });
+    }
+
+    window.dataLayer.push(purchaseData);
+
+    // Clean up localStorage to avoid duplicate events later
+    localStorage.removeItem('alma_last_booking');
 
     const successBookingId = document.getElementById('success-booking-id');
     if (successBookingId && urlParams.get('external_reference')) {
