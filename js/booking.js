@@ -1,6 +1,6 @@
 /* =========================================================
    Alma Rent a Car - Motor de Reservas Público
-   Conexión directa al backend: https://alma-backend-0m1p.onrender.com
+   Backend: https://alma-rent-a-car-backend.vercel.app/api
    ========================================================= */
 
 // URL base de la API pública
@@ -503,6 +503,56 @@ class BookingEngine {
       }
     }
     return total;
+  }
+
+  /* ── CALCULATE TOTAL (used by handleBookingSubmit and dataLayer events) ── */
+  calculateTotal() {
+    if (!this.selectedVehicle) return 0;
+    const days = this.calculateDays();
+    let baseTotal = days * (this.selectedVehicle.pricePerDay || 0);
+    const isDestino = this.paymentType === 'destino';
+    let displayTotal = isDestino ? Math.round(baseTotal * 1.20) : baseTotal;
+    let totalExtras = 0;
+
+    // Out of hours fees
+    if (this.settings && this.settings.OUT_OF_HOURS_FEE) {
+      const fee = parseFloat(this.settings.OUT_OF_HOURS_FEE);
+      if (fee > 0) {
+        const isOutOfHours = (timeStr) => {
+          const [h, m] = timeStr.split(':').map(Number);
+          const t = h + (m||0)/60;
+          const [sh, sm] = (this.settings.OUT_OF_HOURS_START || '08:00').split(':').map(Number);
+          const st = sh + (sm||0)/60;
+          const [eh, em] = (this.settings.OUT_OF_HOURS_END || '20:00').split(':').map(Number);
+          const et = eh + (em||0)/60;
+          return t < st || t > et;
+        };
+        if (isOutOfHours(this.dates.startTime)) totalExtras += fee;
+        if (isOutOfHours(this.dates.endTime)) totalExtras += fee;
+      }
+    }
+
+    // Location fees
+    if (this.locationFees && this.pickupLocation) {
+      const pickupLoc = this.locationFees.find(l => l.name === this.pickupLocation);
+      const dropoffLoc = this.locationFees.find(l => l.name === this.dropoffLocation);
+      if (this.pickupLocation === this.dropoffLocation && pickupLoc) {
+        if (typeof pickupLoc.roundtripFee === 'number' && pickupLoc.roundtripFee > 0) {
+          totalExtras += pickupLoc.roundtripFee;
+        } else {
+          if (pickupLoc.pickupFee > 0) totalExtras += pickupLoc.pickupFee;
+          if (dropoffLoc && dropoffLoc.dropoffFee > 0) totalExtras += dropoffLoc.dropoffFee;
+        }
+      } else {
+        if (pickupLoc && pickupLoc.pickupFee > 0) totalExtras += pickupLoc.pickupFee;
+        if (dropoffLoc && dropoffLoc.dropoffFee > 0) totalExtras += dropoffLoc.dropoffFee;
+      }
+    }
+
+    // Selected extras
+    totalExtras += this.getSelectedExtrasTotal();
+
+    return displayTotal + totalExtras;
   }
 
   /* ── STEP 3: CUSTOMER DATA ── */
