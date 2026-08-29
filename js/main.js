@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initSmoothScroll();
   initCurrentYear();
+  initTrackingCapture();
 });
 
 /* ── HEADER SCROLL EFFECT ── */
@@ -265,3 +266,73 @@ function initCarousels() {
   });
 }
 document.addEventListener('DOMContentLoaded', initCarousels);
+
+/* ── TRACKING CAPTURE (OFFLINE CONVERSIONS) ── */
+function initTrackingCapture() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramsToCapture = [
+    'gclid', 'gbraid', 'wbraid', 'fbclid', 
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'
+  ];
+  
+  let newTrackingData = {};
+  let hasNewData = false;
+
+  // Capture URL parameters
+  paramsToCapture.forEach(param => {
+    const value = urlParams.get(param);
+    if (value) {
+      newTrackingData[param] = value;
+      hasNewData = true;
+    }
+  });
+
+  // Capture Meta cookies if they exist
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  };
+
+  const fbc = getCookie('_fbc');
+  const fbp = getCookie('_fbp');
+  
+  if (fbc) {
+    newTrackingData['_fbc'] = fbc;
+    hasNewData = true;
+  }
+  if (fbp) {
+    newTrackingData['_fbp'] = fbp;
+    hasNewData = true;
+  }
+
+  // Retrieve existing data
+  let existingData = {};
+  try {
+    const stored = localStorage.getItem('alma_marketing_tracking');
+    if (stored) {
+      existingData = JSON.parse(stored);
+    }
+  } catch(e) {}
+
+  // Update logic: only overwrite if we have new tracking parameters in this session
+  // or if we have no existing data. We don't want an organic visit to wipe out a previous ad click.
+  if (hasNewData || Object.keys(existingData).length === 0) {
+    const finalData = {
+      ...existingData,
+      ...newTrackingData,
+      capturedAt: new Date().toISOString()
+    };
+    
+    // Clean up empty fields just in case
+    Object.keys(finalData).forEach(key => {
+      if (finalData[key] === null || finalData[key] === undefined) {
+        delete finalData[key];
+      }
+    });
+
+    localStorage.setItem('alma_marketing_tracking', JSON.stringify(finalData));
+  }
+}
+

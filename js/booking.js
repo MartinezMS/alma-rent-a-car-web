@@ -753,6 +753,15 @@ class BookingEngine {
       ]
     });
 
+    // Retrieve marketing tracking data if available
+    let trackingData = null;
+    try {
+      const storedTracking = localStorage.getItem('alma_marketing_tracking');
+      if (storedTracking) {
+        trackingData = JSON.parse(storedTracking);
+      }
+    } catch(e) {}
+
     try {
       const response = await fetch(`${API_BASE}/public/bookings`, {
         method: 'POST',
@@ -771,6 +780,7 @@ class BookingEngine {
           customerEmail: this.client.email,
           paymentMethod: paymentMethod,
           paymentType: this.paymentType,
+          trackingData: trackingData,
           extras: Object.values(this.selectedExtras).map(ext => ({
             id: ext.id,
             name: ext.name,
