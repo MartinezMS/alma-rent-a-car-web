@@ -594,12 +594,12 @@ class BookingEngine {
     };
 
     const paymentLabel = isDestino 
-      ? '<span style="color:#d97706; font-weight:600;"><i class="fas fa-store"></i> Pago en destino (+20%)</span>'
+      ? '<span style="color:#d97706; font-weight:600;"><i class="fas fa-store"></i> Seña (20%) + Saldo en destino</span>'
       : '<span style="color:#16a34a; font-weight:600;"><i class="fas fa-bolt"></i> Pago online (20% OFF)</span>';
 
     const paymentContainer = document.getElementById('payment-method-container');
     if (paymentContainer) {
-      paymentContainer.style.display = isDestino ? 'none' : 'flex';
+      paymentContainer.style.display = 'flex'; // ALWAYS show payment methods for both options
     }
 
     summary.innerHTML = `
@@ -627,10 +627,24 @@ class BookingEngine {
       ${isDestino ? `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Recargo pago en destino (20%)</span><span>ARS $${this.formatARS(displayTotal - baseTotal)}</span></div>` : ''}
       ${extraCostsHTML}
       <div class="booking-summary-row total">
-        <span>Total Estimado</span>
+        <span>Total Reserva</span>
         <span>ARS $${this.formatARS(total)}</span>
       </div>
-      ${isDestino ? '<p style="font-size:0.75rem; color:#94a3b8; margin-top:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> La tarifa "Pagar en destino" puede modificarse al momento del retiro del vehículo.</p>' : ''}
+      ${isDestino 
+        ? `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #d97706;">
+             <span>Seña a Pagar Hoy (20%)</span>
+             <span>ARS $${this.formatARS(Math.ceil(total * 0.20))}</span>
+           </div>
+           <div class="booking-summary-row" style="color: #64748b; font-size: 0.9rem;">
+             <span>Saldo a pagar en destino</span>
+             <span>ARS $${this.formatARS(Math.floor(total * 0.80))}</span>
+           </div>
+           <p style="font-size:0.75rem; color:#94a3b8; margin-top:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> El saldo en destino puede estar sujeto a variaciones al momento del retiro.</p>`
+        : `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #16a34a;">
+             <span>Monto a Pagar Hoy (100% online)</span>
+             <span>ARS $${this.formatARS(total)}</span>
+           </div>`
+      }
     `;
   }
 
@@ -691,11 +705,9 @@ class BookingEngine {
     }
 
     // Get selected payment method
-    let paymentMethod = this.paymentType === 'destino' ? 'destino' : 'mercadopago';
-    if (this.paymentType !== 'destino') {
-      const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
-      if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
-    }
+    let paymentMethod = 'mercadopago'; // default
+    const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
+    if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
 
     // Submit
     const submitBtn = document.getElementById('booking-submit-btn');
@@ -728,6 +740,7 @@ class BookingEngine {
           customerPhone: this.client.phone,
           customerEmail: this.client.email,
           paymentMethod: paymentMethod,
+          paymentType: this.paymentType,
           extras: Object.values(this.selectedExtras).map(ext => ({
             id: ext.id,
             name: ext.name,
