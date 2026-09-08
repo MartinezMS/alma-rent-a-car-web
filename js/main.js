@@ -287,6 +287,9 @@ function initTrackingCapture() {
     }
   });
 
+  // Always capture landing URL on first visit
+  newTrackingData['landing_url'] = window.location.href;
+
   // Capture Meta cookies if they exist
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
@@ -316,13 +319,14 @@ function initTrackingCapture() {
     }
   } catch(e) {}
 
-  // Update logic: only overwrite if we have new tracking parameters in this session
-  // or if we have no existing data. We don't want an organic visit to wipe out a previous ad click.
+  // First-touch logic: if we already have a gclid/fbclid stored, 
+  // don't overwrite it with an organic visit (no new tracking params)
+  // Only update if we have new ad click data OR no existing data at all
   if (hasNewData || Object.keys(existingData).length === 0) {
     const finalData = {
       ...existingData,
       ...newTrackingData,
-      capturedAt: new Date().toISOString()
+      capturedAt: existingData.capturedAt || new Date().toISOString()
     };
     
     // Clean up empty fields just in case
