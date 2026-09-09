@@ -24,6 +24,7 @@ class BookingEngine {
   }
 
   async init() {
+    this.fetchExchangeRate();
     this.bindEvents();
     this.updateStepIndicator();
     try {
@@ -64,6 +65,48 @@ class BookingEngine {
     dropoffSelect.innerHTML = buildOptions(sorted);
   }
 
+  async fetchExchangeRate() {
+    try {
+      const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
+      if (res.ok) {
+        const data = await res.json();
+        this.exchangeRate = data.venta || 1000;
+      } else {
+        this.exchangeRate = 1000;
+      }
+    } catch (e) {
+      this.exchangeRate = 1000;
+    }
+  }
+
+  saveCustomerForm() {
+    const customerForm = {
+      firstName: document.getElementById('customer-first-name')?.value || '',
+      lastName: document.getElementById('customer-last-name')?.value || '',
+      email: document.getElementById('customer-email')?.value || '',
+      phone: document.getElementById('customer-phone')?.value || '',
+      dni: document.getElementById('customer-dni')?.value || '',
+      notes: document.getElementById('customer-notes')?.value || '',
+    };
+    sessionStorage.setItem('alma_customer_form', JSON.stringify(customerForm));
+  }
+
+  restoreCustomerForm() {
+    try {
+      const stored = sessionStorage.getItem('alma_customer_form');
+      if (stored) {
+        const data = JSON.parse(stored);
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+        setVal('customer-first-name', data.firstName);
+        setVal('customer-last-name', data.lastName);
+        setVal('customer-email', data.email);
+        setVal('customer-phone', data.phone);
+        setVal('customer-dni', data.dni);
+        setVal('customer-notes', data.notes);
+      }
+    } catch(e) {}
+  }
+
   bindEvents() {
     // Search form
     const searchBtn = document.getElementById('booking-search-btn');
@@ -98,6 +141,18 @@ class BookingEngine {
         this.handleBookingSubmit();
       });
     }
+
+    // Persist customer form on input
+    ['customer-first-name', 'customer-last-name', 'customer-email', 'customer-phone', 'customer-dni', 'customer-notes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => this.saveCustomerForm());
+    });
+    this.restoreCustomerForm();
+
+    // Re-render summary when payment method changes (to show/hide USD conversion)
+    document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+      radio.addEventListener('change', () => this.updateBookingSummary());
+    });
 
     // New booking button
     const newBookingBtn = document.getElementById('new-booking-btn');
@@ -691,9 +746,17 @@ class BookingEngine {
         <span>ARS $${this.formatARS(total)}</span>
       </div>
       ${isDestino 
-        ? `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #d97706;">
+        ? (() => {
+            let paymentMethod = 'mercadopago';
+            const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
+            if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
+            const deposit = Math.ceil(total * 0.20);
+            const usdText = (paymentMethod === 'paypal' && this.exchangeRate) 
+                ? ` <small style="font-weight:normal; font-size:0.9rem; color:#666;"><br>≈ USD ${(deposit / this.exchangeRate).toFixed(2)}</small>` 
+                : '';
+            return `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #d97706;">
              <span>Seña a Pagar Hoy (20%)</span>
-             <span>ARS $${this.formatARS(Math.ceil(total * 0.20))}</span>
+             <span style="text-align: right;">ARS $${this.formatARS(deposit)}${usdText}</span>
            </div>
            <div class="booking-summary-row" style="color: #64748b; font-size: 0.9rem;">
              <span>Saldo a pagar en destino</span>
@@ -1044,6 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Clean up localStorage to avoid duplicate events later
     localStorage.removeItem('alma_last_booking');
+    sessionStorage.removeItem('alma_customer_form');
 
     const successBookingId = document.getElementById('success-booking-id');
     const returnedBookingId = urlParams.get('external_reference') || urlParams.get('bookingId');
@@ -1052,6 +1116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Clear URL to prevent firing again on refresh
+    window.history.replaceState({}, document.title, window.location.pathname);
+  } else if (paypalStatus === 'cancelled') {
+    alert('El pago fue cancelado. Tus datos fueron guardados para que puedas reintentar tu reserva.');
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 });
