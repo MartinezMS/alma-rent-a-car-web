@@ -509,9 +509,9 @@ class BookingEngine {
   calculateTotal() {
     if (!this.selectedVehicle) return 0;
     const days = this.calculateDays();
-    let baseTotal = days * (this.selectedVehicle.pricePerDay || 0);
+    let baseTotal = days * (this.selectedVehicle.pricePerDay || 0); // Precio online
     const isDestino = this.paymentType === 'destino';
-    let displayTotal = isDestino ? Math.round(baseTotal * 1.20) : baseTotal;
+    let displayTotal = isDestino ? Math.round((baseTotal / 0.8) * 1.10) : baseTotal;
     let totalExtras = 0;
 
     // Out of hours fees
@@ -561,11 +561,11 @@ class BookingEngine {
     if (!summary || !this.selectedVehicle) return;
 
     const days = this.calculateDays();
-    let baseTotal = days * (this.selectedVehicle.pricePerDay || 0);
+    let baseTotal = days * (this.selectedVehicle.pricePerDay || 0); // Precio online
     
-    // Apply payment type markup
+    // Apply payment type markup exactly like catalog
     const isDestino = this.paymentType === 'destino';
-    let displayTotal = isDestino ? Math.round(baseTotal * 1.20) : baseTotal;
+    let displayTotal = isDestino ? Math.round((baseTotal / 0.8) * 1.10) : baseTotal;
     
     let extraCostsHTML = '';
     let totalExtras = 0;
@@ -684,7 +684,7 @@ class BookingEngine {
         <span>Duración</span>
         <span>${days} día${days !== 1 ? 's' : ''} (ARS $${this.formatARS(this.selectedVehicle.pricePerDay)}/día)</span>
       </div>
-      ${isDestino ? `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Recargo pago en destino (20%)</span><span>ARS $${this.formatARS(displayTotal - baseTotal)}</span></div>` : ''}
+      ${isDestino ? `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Recargo pago en destino</span><span>ARS $${this.formatARS(displayTotal - baseTotal)}</span></div>` : ''}
       ${extraCostsHTML}
       <div class="booking-summary-row total">
         <span>Total Reserva</span>
@@ -990,12 +990,13 @@ document.addEventListener('DOMContentLoaded', () => {
     endDate.setAttribute('min', today);
   }
 
-  // Handle Mercado Pago return URL
+  // Handle Mercado Pago and PayPal return URLs
   const urlParams = new URLSearchParams(window.location.search);
   const collectionStatus = urlParams.get('collection_status');
   const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+  const paypalStatus = urlParams.get('paypal');
   
-  if ((collectionStatus === 'approved' || urlParams.get('status') === 'approved') && bookingEngine) {
+  if ((collectionStatus === 'approved' || urlParams.get('status') === 'approved' || paypalStatus === 'success') && bookingEngine) {
     // Show step 4 directly
     bookingEngine.goToStep(4);
     
@@ -1045,8 +1046,9 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('alma_last_booking');
 
     const successBookingId = document.getElementById('success-booking-id');
-    if (successBookingId && urlParams.get('external_reference')) {
-      successBookingId.textContent = `#${String(urlParams.get('external_reference')).padStart(5, '0')}`;
+    const returnedBookingId = urlParams.get('external_reference') || urlParams.get('bookingId');
+    if (successBookingId && returnedBookingId) {
+      successBookingId.textContent = `#${String(returnedBookingId).padStart(5, '0')}`;
     }
     
     // Clear URL to prevent firing again on refresh
