@@ -762,7 +762,8 @@ class BookingEngine {
              <span>Saldo a pagar en destino</span>
              <span>ARS $${this.formatARS(Math.floor(total * 0.80))}</span>
            </div>
-           <p style="font-size:0.75rem; color:#94a3b8; margin-top:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> El saldo en destino puede estar sujeto a variaciones al momento del retiro.</p>`
+           <p style="font-size:0.75rem; color:#94a3b8; margin-top:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> El saldo en destino puede estar sujeto a variaciones al momento del retiro.</p>`;
+          })()
         : `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #16a34a;">
              <span>Monto a Pagar Hoy (100% online)</span>
              <span>ARS $${this.formatARS(total)}</span>
