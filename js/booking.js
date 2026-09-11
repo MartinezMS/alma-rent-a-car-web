@@ -622,6 +622,9 @@ class BookingEngine {
     const isDestino = this.paymentType === 'destino';
     let displayTotal = isDestino ? Math.round((baseTotal / 0.8) * 1.10) : baseTotal;
     
+    const listPrice = Math.round((this.selectedVehicle.pricePerDay || 0) / 0.8);
+    const listTotal = days * listPrice;
+    
     let extraCostsHTML = '';
     let totalExtras = 0;
 
@@ -737,9 +740,12 @@ class BookingEngine {
       </div>
       <div class="booking-summary-row">
         <span>Duración</span>
-        <span>${days} día${days !== 1 ? 's' : ''} (ARS $${this.formatARS(this.selectedVehicle.pricePerDay)}/día)</span>
+        <span>${days} día${days !== 1 ? 's' : ''} (ARS $${this.formatARS(listPrice)}/día)</span>
       </div>
-      ${isDestino ? `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Recargo pago en destino</span><span>ARS $${this.formatARS(displayTotal - baseTotal)}</span></div>` : ''}
+      ${!isDestino 
+        ? `<div class="booking-summary-row" style="color:#16a34a; font-size:0.85rem;"><span>Descuento pago 100% online (-20%)</span><span>-ARS $${this.formatARS(listTotal - baseTotal)}</span></div>` 
+        : `<div class="booking-summary-row" style="color:#d97706; font-size:0.85rem;"><span>Tarifa de gestión y pago en destino</span><span>+ARS $${this.formatARS(displayTotal - listTotal)}</span></div>`
+      }
       ${extraCostsHTML}
       <div class="booking-summary-row total">
         <span>Total Reserva</span>
