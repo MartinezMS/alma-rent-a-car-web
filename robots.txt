@@ -29,4 +29,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://almarentacar.com/sitemap.xml
+Sitemap: https://nueva.almarentacar.com/sitemap.xml
