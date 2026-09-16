@@ -391,7 +391,20 @@ class BookingEngine {
       return;
     }
 
-    container.innerHTML = this.filteredVehicles.map(v => {
+    const groupedVehiclesMap = {};
+    
+    this.filteredVehicles.forEach(v => {
+      const key = `${v.make}-${v.model}-${v.category?.name || 'none'}-${v.transmission || 'none'}-${v.pricePerDay || 0}`;
+      if (!groupedVehiclesMap[key]) {
+        groupedVehiclesMap[key] = { ...v, stock: 1 };
+      } else {
+        groupedVehiclesMap[key].stock += 1;
+      }
+    });
+
+    const groupedVehicles = Object.values(groupedVehiclesMap);
+
+    container.innerHTML = groupedVehicles.map(v => {
       const totalOnline = (v.pricePerDay || 0) * days;
       const originalTotal = totalOnline / 0.8;
       const totalDestino = Math.round(originalTotal * 1.10);
