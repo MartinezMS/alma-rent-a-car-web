@@ -18,15 +18,15 @@ N° 41 esq. Av. Alte. Brown, San Salvador de Jujuy, Argentina.
 
 ## Páginas principales
 
-- [Inicio y motor de reservas](https://nueva.almarentacar.com/): búsqueda de
+- [Inicio y motor de reservas](https://almarentacar.com/): búsqueda de
   vehículos por fecha, punto de retiro y devolución, con pago online.
-- [Nosotros](https://nueva.almarentacar.com/nosotros.html): historia y equipo.
-- [Preguntas frecuentes](https://nueva.almarentacar.com/faq.html): requisitos,
+- [Nosotros](https://almarentacar.com/nosotros.html): historia y equipo.
+- [Preguntas frecuentes](https://almarentacar.com/faq.html): requisitos,
   qué incluye la tarifa, cruce a países limítrofes, combustible, horarios.
-- [Contacto](https://nueva.almarentacar.com/contacto.html): formulario, mapa y
+- [Contacto](https://almarentacar.com/contacto.html): formulario, mapa y
   WhatsApp.
 
 ## Legal
 
-- [Términos y condiciones](https://nueva.almarentacar.com/terminos.html)
-- [Política de privacidad](https://nueva.almarentacar.com/privacidad.html)
+- [Términos y condiciones](https://almarentacar.com/terminos.html)
+- [Política de privacidad](https://almarentacar.com/privacidad.html)
