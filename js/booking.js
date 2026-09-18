@@ -327,8 +327,8 @@ class BookingEngine {
 
   async fetchVehicles() {
     const params = new URLSearchParams();
-    if (this.dates.start) params.append('startDate', this.dates.start);
-    if (this.dates.end) params.append('endDate', this.dates.end);
+    if (this.dates.start) params.append('startDate', `${this.dates.start}T${this.dates.startTime || '10:00'}:00`);
+    if (this.dates.end) params.append('endDate', `${this.dates.end}T${this.dates.endTime || '10:00'}:00`);
     
     const response = await fetch(`${API_BASE}/public/vehicles?${params.toString()}`);
     if (!response.ok) throw new Error('Error al obtener vehículos');
