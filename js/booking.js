@@ -770,9 +770,7 @@ class BookingEngine {
             const paymentMethodEl = document.querySelector('input[name="payment-method"]:checked');
             if (paymentMethodEl) paymentMethod = paymentMethodEl.value;
             const deposit = Math.ceil(total * 0.20);
-            const usdText = (paymentMethod === 'paypal' && this.exchangeRate) 
-                ? ` <small style="font-weight:normal; font-size:0.9rem; color:#666;"><br>≈ USD ${(deposit / this.exchangeRate).toFixed(2)}</small>` 
-                : '';
+            const usdText = ''; // Removed USD conversion for dLocal since it natively supports ARS
             return `<div class="booking-summary-row" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #d97706;">
              <span>Seña a Pagar Hoy (20%)</span>
              <span style="text-align: right;">ARS $${this.formatARS(deposit)}${usdText}</span>
@@ -1073,13 +1071,13 @@ document.addEventListener('DOMContentLoaded', () => {
     endDate.setAttribute('min', today);
   }
 
-  // Handle Mercado Pago and PayPal return URLs
+  // Handle Mercado Pago and dLocal return URLs
   const urlParams = new URLSearchParams(window.location.search);
   const collectionStatus = urlParams.get('collection_status');
   const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
-  const paypalStatus = urlParams.get('paypal');
+  const dlocalStatus = urlParams.get('dlocal');
   
-  if ((collectionStatus === 'approved' || urlParams.get('status') === 'approved' || paypalStatus === 'success') && bookingEngine) {
+  if ((collectionStatus === 'approved' || urlParams.get('status') === 'approved' || dlocalStatus === 'success') && bookingEngine) {
     // Show step 4 directly
     bookingEngine.goToStep(4);
     
@@ -1137,8 +1135,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Clear URL to prevent firing again on refresh
     window.history.replaceState({}, document.title, window.location.pathname);
-  } else if (paypalStatus === 'cancelled') {
-    alert('El pago fue cancelado. Tus datos fueron guardados para que puedas reintentar tu reserva.');
+  } else if (dlocalStatus === 'cancelled' || dlocalStatus === 'error') {
+    alert('El pago no se pudo procesar. Tus datos fueron guardados para que puedas reintentar tu reserva.');
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 });
